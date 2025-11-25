@@ -23,7 +23,7 @@ const StyledBadge =
 
 const Header = () => {
   return (
-    <header>
+    <header className="bg-white shadow-md">
       <div className="top-strip py-2 border-t-[1px] border-b-[1px] border-gray-300">
         <div className="container">
           <div className="flex items-center justify-between">

@@ -9,16 +9,16 @@ import ProductItem from "../ProductItem/ProductItem";
 
 const ProductsSlider = (props) => {
   return (
-    <div className="productsSlider py-5">
+    <div className="productsSlider py-5 w-full">
       <Swiper
-        slidesPerView={props.itmes}
+        slidesPerView={props.items}
         spaceBetween={10}
         navigation={true}
         modules={[Navigation]}
         className="mySwiper"
       >
         <SwiperSlide>
-          <ProductItem />
+          <ProductItem img={"/src/assets/Image/product/1.webp"}/>
         </SwiperSlide>
       </Swiper>
     </div>

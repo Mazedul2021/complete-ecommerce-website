@@ -9,7 +9,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 
 const HomeSlider = () => {
   return (
-    <div className="homeSlider mt-3">
+    <div className="homeSlider mt-5 pb-8">
       <div className="container">
         <Swiper
           slidesPerView={1}

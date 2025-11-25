@@ -7,11 +7,11 @@ import "./style.css";
 const Navigation = () => {
   return (
     <nav className="nav py-2">
-      <div className="container flex items-center justify-end gap-7">
-        <div className="col-1 w-[15%] bg-slate-300 rounded-lg">
+      <div className="container flex items-center justify-end">
+        <div className="col-1 w-[20%]">
           <CategoryPanel />
         </div>
-        <div className="col-2 w-[85%]">
+        <div className="col-2 w-[80%]">
           <ul className="flex items-center gap-5 nav">
             <li className="list-none">
               <Link to="/" className="link transiton text-[14px] font-[500]">

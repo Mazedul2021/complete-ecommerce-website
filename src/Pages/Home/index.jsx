@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 
 import HomeSlider from "../../components/HomeSlider/HomeSlider";
 import ProductsSlider from "../../components/ProductsSlider/ProductsSlider";
+import HomeCatSlider from "../../components/CatSlider/HomeCatSlider";
+import AdsBannerSlider from "../../components/AdsBannerSlider/AdsBannerSlider";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -16,6 +18,7 @@ const Home = () => {
   return (
     <>
       <HomeSlider />
+      <HomeCatSlider/>
       <section className="bg-white py-8">
         <div className="container">
           <div className="flex items-center justify-between">
@@ -47,8 +50,8 @@ const Home = () => {
             </div>
           </div>
 
-          <ProductsSlider items={5}/>
-
+          <ProductsSlider items={6}/>
+          <AdsBannerSlider items={4}/>
         </div>
       </section>
     </>
