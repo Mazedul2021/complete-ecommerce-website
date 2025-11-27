@@ -21,22 +21,25 @@ const AdsBannerSlider = (props) => {
             <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
         </SwiperSlide>
         <SwiperSlide>
-            <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
+            <BannerBox img={"/src/assets/Image/Banner/2.png"} link={'/'}/>
         </SwiperSlide>
         <SwiperSlide>
-            <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
+            <BannerBox img={"/src/assets/Image/Banner/3.png"} link={'/'}/>
         </SwiperSlide>
         <SwiperSlide>
-            <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
+            <BannerBox img={"/src/assets/Image/Banner/4.png"} link={'/'}/>
         </SwiperSlide>
         <SwiperSlide>
-            <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
+            <BannerBox img={"/src/assets/Image/Banner/5.png"} link={'/'}/>
         </SwiperSlide>
         <SwiperSlide>
-            <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
+            <BannerBox img={"/src/assets/Image/Banner/6.png"} link={'/'}/>
         </SwiperSlide>
         <SwiperSlide>
-            <BannerBox img={"/src/assets/Image/Banner/1.png"} link={'/'}/>
+            <BannerBox img={"/src/assets/Image/Banner/7.png"} link={'/'}/>
+        </SwiperSlide>
+        <SwiperSlide>
+            <BannerBox img={"/src/assets/Image/Banner/8.png"} link={'/'}/>
         </SwiperSlide>
       </Swiper>
     </div>

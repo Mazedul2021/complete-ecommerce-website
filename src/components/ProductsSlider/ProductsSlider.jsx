@@ -20,6 +20,21 @@ const ProductsSlider = (props) => {
         <SwiperSlide>
           <ProductItem img={"/src/assets/Image/product/1.webp"}/>
         </SwiperSlide>
+        <SwiperSlide>
+          <ProductItem img={"/src/assets/Image/product/2.webp"}/>
+        </SwiperSlide>
+        <SwiperSlide>
+          <ProductItem img={"/src/assets/Image/product/3.webp"}/>
+        </SwiperSlide>
+        <SwiperSlide>
+          <ProductItem img={"/src/assets/Image/product/4.webp"}/>
+        </SwiperSlide>
+        <SwiperSlide>
+          <ProductItem img={"/src/assets/Image/product/1.webp"}/>
+        </SwiperSlide>
+        <SwiperSlide>
+          <ProductItem img={"/src/assets/Image/product/1.webp"}/>
+        </SwiperSlide>
       </Swiper>
     </div>
   );
