@@ -7,6 +7,7 @@ import HomeSlider from "../../components/HomeSlider/HomeSlider";
 import ProductsSlider from "../../components/ProductsSlider/ProductsSlider";
 import HomeCatSlider from "../../components/CatSlider/HomeCatSlider";
 import AdsBannerSlider from "../../components/AdsBannerSlider/AdsBannerSlider";
+import Footer from "../../components/footer/Footer";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -51,8 +52,30 @@ const Home = () => {
           </div>
 
           <ProductsSlider items={6}/>
+
+        </div>
+      </section>
+      <section className="py-2 lg:py-0 pt-0 bg-white">
+        <div className="container">
+          <h2 className="text-[20px] font-semibold">Latest Products</h2>
+          <ProductsSlider items={6}/>
+        </div>
+      </section>
+      <section className="py-2 lg:py-0 pt-0 bg-white">
+        <div className="container">
+          <h2 className="text-[20px] font-semibold">Featured Products
+</h2>
+          <ProductsSlider items={6}/>
+        </div>
+      </section>
+      <section className="py-2 lg:py-0 pt-0 bg-white">
+        <div className="container">
           <AdsBannerSlider items={4}/>
         </div>
+      </section>
+      
+      <section>
+        <Footer/>
       </section>
     </>
   );
