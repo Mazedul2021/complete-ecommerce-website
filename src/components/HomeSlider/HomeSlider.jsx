@@ -5,6 +5,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import 'swiper/css/pagination';
 
+import slide1 from "../../assets/Image/HomeSlider/1.png";
+import slide2 from "../../assets/Image/HomeSlider/2.png";
+import slide3 from "../../assets/Image/HomeSlider/3.png";
+import slide4 from "../../assets/Image/HomeSlider/4.png";
+
 import { Pagination, Navigation } from 'swiper/modules';
 
 const HomeSlider = () => {
@@ -25,7 +30,7 @@ const HomeSlider = () => {
           <SwiperSlide>
             <div className="item overflow-hidden">
               <img
-                src={"/src/assets/Image/HomeSlider/1.png"}
+                src={slide1}
                 alt="Banner slide"
                 className="w-full"
               />
@@ -34,7 +39,7 @@ const HomeSlider = () => {
           <SwiperSlide>
             <div className="item overflow-hidden">
             <img
-              src={"/src/assets/Image/HomeSlider/2.png"}
+              src={slide2}
               alt="Banner slide"
               className="w-full"
             />
@@ -43,7 +48,7 @@ const HomeSlider = () => {
           <SwiperSlide>
             <div className="item overflow-hidden">
             <img
-              src={"/src/assets/Image/HomeSlider/3.png"}
+              src={slide3}
               alt="Banner slide"
               className="w-full"
             />
@@ -52,7 +57,7 @@ const HomeSlider = () => {
           <SwiperSlide>
             <div className="item overflow-hidden">
             <img
-              src={"/src/assets/Image/HomeSlider/4.png"}
+              src={slide4}
               alt="Banner slide"
               className="w-full"
             />

@@ -12,6 +12,12 @@ import { CiYoutube } from "react-icons/ci";
 import { FaInstagram } from "react-icons/fa";
 import { FaTiktok } from "react-icons/fa";
 
+import pm1 from "../../assets/Image/bottomstrip/carte_bleue.png";
+import pm2 from "../../assets/Image/bottomstrip/visa.png";
+import pm3 from "../../assets/Image/bottomstrip/master_card.png";
+import pm4 from "../../assets/Image/bottomstrip/american_express.png";
+import pm5 from "../../assets/Image/bottomstrip/paypal.png";
+
 
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -183,11 +189,11 @@ const Footer = () => {
             </ul>
             <p class="text-[13px] text-center mb-0">© 2024 - Olevs Watch Shop</p>
             <div class="flex items-center gap-1">
-                <img src="/src/assets/Image/bottomstrip/carte_bleue.png" alt="image"/>
-                <img src="/src/assets/Image/bottomstrip/visa.png" alt="image"/>
-                <img src="/src/assets/Image/bottomstrip/master_card.png" alt="image"/>
-                <img src="/src/assets/Image/bottomstrip/american_express.png" alt="image"/>
-                <img src="/src/assets/Image/bottomstrip/paypal.png" alt="image"/>
+                <img src={pm1} alt="image"/>
+                <img src={pm2} alt="image"/>
+                <img src={pm3} alt="image"/>
+                <img src={pm4} alt="image"/>
+                <img src={pm5} alt="image"/>
             </div>
         </div>
       </div>

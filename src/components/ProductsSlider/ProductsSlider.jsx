@@ -4,6 +4,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
+import Product1 from "../../assets/Image/product/1.webp"
+import Product2 from "../../assets/Image/product/2.webp"
+import Product3 from "../../assets/Image/product/3.webp"
+import Product4 from "../../assets/Image/product/4.webp"
+import Product5 from "../../assets/Image/product/5.jpg"
+import Product6 from "../../assets/Image/product/6.webp"
+
+
 import { Navigation } from "swiper/modules";
 import ProductItem from "../ProductItem/ProductItem";
 
@@ -18,22 +26,22 @@ const ProductsSlider = (props) => {
         className="mySwiper"
       >
         <SwiperSlide>
-          <ProductItem img={"/src/assets/Image/product/1.webp"}/>
+          <ProductItem img={Product1}/>
         </SwiperSlide>
         <SwiperSlide>
-          <ProductItem img={"/src/assets/Image/product/2.webp"}/>
+          <ProductItem img={Product2}/>
         </SwiperSlide>
         <SwiperSlide>
-          <ProductItem img={"/src/assets/Image/product/3.webp"}/>
+          <ProductItem img={Product3}/>
         </SwiperSlide>
         <SwiperSlide>
-          <ProductItem img={"/src/assets/Image/product/4.webp"}/>
+          <ProductItem img={Product4}/>
         </SwiperSlide>
         <SwiperSlide>
-          <ProductItem img={"/src/assets/Image/product/1.webp"}/>
+          <ProductItem img={Product5}/>
         </SwiperSlide>
         <SwiperSlide>
-          <ProductItem img={"/src/assets/Image/product/1.webp"}/>
+          <ProductItem img={Product6}/>
         </SwiperSlide>
       </Swiper>
     </div>
