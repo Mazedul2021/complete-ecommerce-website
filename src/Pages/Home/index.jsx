@@ -19,7 +19,7 @@ const Home = () => {
   return (
     <>
       <HomeSlider />
-      <HomeCatSlider/>
+      <HomeCatSlider />
       <section className="bg-white py-8">
         <div className="container">
           <div className="flex items-center justify-between">
@@ -30,52 +30,56 @@ const Home = () => {
               </p>
             </div>
             <div className="rightsec w-[60%]">
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  aria-label="scrollable auto tabs example"
-                >
-                  <Tab label="Fashion" />
-                  <Tab label="Electronics" />
-                  <Tab label="Bags" />
-                  <Tab label="Footwear" />
-                  <Tab label="Groceries" />
-                  <Tab label="Beauty" />
-                  <Tab label="Fitness" />
-                  <Tab label="Jewellery" />
-                  <Tab label="Gadgets" />
-                  <Tab label="Home Appeals" />
-                </Tabs>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+              >
+                <Tab label="Fashion" />
+                <Tab label="Electronics" />
+                <Tab label="Bags" />
+                <Tab label="Footwear" />
+                <Tab label="Groceries" />
+                <Tab label="Beauty" />
+                <Tab label="Fitness" />
+                <Tab label="Jewellery" />
+                <Tab label="Gadgets" />
+                <Tab label="Home Appeals" />
+              </Tabs>
             </div>
           </div>
 
-          <ProductsSlider items={6}/>
-
+          <ProductsSlider items={6} />
         </div>
       </section>
       <section className="py-2 lg:py-0 pt-0 bg-white">
         <div className="container">
           <h2 className="text-[20px] font-semibold">Latest Products</h2>
-          <ProductsSlider items={6}/>
+          <ProductsSlider items={6} />
         </div>
       </section>
       <section className="py-2 lg:py-0 pt-0 bg-white">
         <div className="container">
-          <h2 className="text-[20px] font-semibold">Featured Products
-</h2>
-          <ProductsSlider items={6}/>
+          <h2 className="text-[20px] font-semibold">Featured Products</h2>
+          <ProductsSlider items={6} />
         </div>
       </section>
       <section className="py-2 lg:py-0 pt-0 bg-white">
         <div className="container">
-          <AdsBannerSlider items={4}/>
+          <h2 className="text-[20px] font-semibold">Latest Products</h2>
+          <ProductsSlider items={6} />
         </div>
       </section>
-      
+      <section className="py-2 lg:py-0 pt-0 bg-white">
+        <div className="container">
+          <AdsBannerSlider items={4} />
+        </div>
+      </section>
+
       <section>
-        <Footer/>
+        <Footer />
       </section>
     </>
   );

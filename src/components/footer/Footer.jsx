@@ -71,9 +71,9 @@ const Footer = () => {
                 <h2 class="text-[18px] font-[600] mb-4">Products</h2>
                 <ul class="list">
                   <li class="list-none text-[14px] w-full mb-2">
-                    <a class="link" to="/">
+                    <Link class="link" to="/">
                       Prices drop
-                    </a>
+                    </Link>
                   </li>
                   <li class="list-none text-[14px] w-full mb-2">
                     <Link class="link" to="/">
