@@ -66,78 +66,78 @@ const Footer = () => {
                 Dhaka-1212
               </p>
               <Link to="mailto:contact@ows.com" className="link text-[13px]">
-                contact@ows.com
+                contact@olevswatchshop.com
               </Link>
               <span className="text-[22px] font-[600] block w-full mt-3 mb-5 text-primary">
                 (+880) 1799018864
               </span>
             </div>
-            <div class="part2  w-full lg:w-[40%] flex pl-0 lg:pl-8 mt-5 lg:mt-0">
-              <div class="part2_col1 w-[50%]">
-                <h2 class="text-[18px] font-[600] mb-4">Products</h2>
-                <ul class="list">
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+            <div className="part2  w-full lg:w-[40%] flex pl-0 lg:pl-8 mt-5 lg:mt-0">
+              <div className="part2_col1 w-[50%]">
+                <h2 className="text-[18px] font-[600] mb-4">Products</h2>
+                <ul className="list">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Prices drop
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       New products
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Best sales
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Contact us
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Sitemap
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Stores
                     </Link>
                   </li>
                 </ul>
               </div>
-              <div class="part2_col2 w-[50%]">
-                <h2 class="text-[18px] font-[600] mb-4">Our company</h2>
-                <ul class="list">
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+              <div className="part2_col2 w-[50%]">
+                <h2 className="text-[18px] font-[600] mb-4">Our company</h2>
+                <ul className="list">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Delivery
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Legal Notice
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Terms and conditions of use
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       About us
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Secure payment
                     </Link>
                   </li>
-                  <li class="list-none text-[14px] w-full mb-2">
-                    <Link class="link" to="/">
+                  <li className="list-none text-[14px] w-full mb-2">
+                    <Link className="link" to="/">
                       Login
                     </Link>
                   </li>
@@ -146,21 +146,21 @@ const Footer = () => {
             </div>
 
             <div className="part2  w-full lg:w-[35%] flex pl-0 lg:pl-8 flex-col pr-8 mt-5 lg:mt-0">
-              <h2 class="text-[18px] font-[600] mb-2 lg:mb-4">
+              <h2 className="text-[18px] font-[600] mb-2 lg:mb-4">
                 Subscribe to newsletter
               </h2>
-              <p class="text-[13px]">
+              <p className="text-[13px]">
                 Subscribe to our latest newsletter to get news about special
                 discounts.
               </p>
               <form className="mt-5">
                 <input
                   type="text"
-                  class="w-full h-[45px] border outline-none pl-4 pr-4 rounded-sm mb-4 focus:border-[rgba(0,0,0,0.3)]"
+                  className="w-full h-[45px] border outline-none pl-4 pr-4 rounded-sm mb-4 focus:border-[rgba(0,0,0,0.3)]"
                   placeholder="Your Email Address"
                 ></input>
                 <Button className="btn-org">SUBSCRIBE</Button>
-                <span class="MuiTouchRipple-root"></span>
+                <span className="MuiTouchRipple-root"></span>
                 <FormControlLabel
                   control={<Checkbox defaultChecked />}
                   label=" I agree to the terms and conditions and the privacy policy"
@@ -187,8 +187,8 @@ const Footer = () => {
                 <FaTiktok className="text-[17px] group-hover:text-white"/>
                 </Link></li>
             </ul>
-            <p class="text-[13px] text-center mb-0">© 2024 - Olevs Watch Shop</p>
-            <div class="flex items-center gap-1">
+            <p className="text-[13px] text-center mb-0">© 2024 - Olevs Watch Shop</p>
+            <div className="flex items-center gap-1">
                 <img src={pm1} alt="image"/>
                 <img src={pm2} alt="image"/>
                 <img src={pm3} alt="image"/>

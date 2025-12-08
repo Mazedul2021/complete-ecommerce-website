@@ -53,3 +53,9 @@ footer form input::placeholder{font-size: 14px;}
     color: #ff5252 !important;
 }
 .MuiFormControlLabel-label{font-size: 13px !important; color: rgba(0, 0, 0, 0.9);}
+
+.ReactCollapse--collapse {
+  transition: height 500ms;
+}
+
+.MuiCheckbox-root{padding: 6px !important;}

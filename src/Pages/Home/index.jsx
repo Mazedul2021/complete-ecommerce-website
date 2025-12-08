@@ -66,12 +66,7 @@ const Home = () => {
           <ProductsSlider items={6} />
         </div>
       </section>
-      <section className="py-2 lg:py-0 pt-0 bg-white">
-        <div className="container">
-          <h2 className="text-[20px] font-semibold">Latest Products</h2>
-          <ProductsSlider items={6} />
-        </div>
-      </section>
+  
       <section className="py-2 lg:py-0 pt-0 bg-white">
         <div className="container">
           <AdsBannerSlider items={4} />
