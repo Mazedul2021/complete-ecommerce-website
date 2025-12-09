@@ -5,13 +5,14 @@ import "./style.css"
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
 import Button from '@mui/material/Button';
+import Product1 from "../../assets/Image/product/1.webp"
 
 
 const ProductItem = (props) => {
   return (
     <div className='productItem shadow-lg rounded-md overflow-hidden border-1 border-[rgba(0,0,0,0.1)]'>
-        <div className='group imgWrapper w-[100%]  overflow-hidden  rounded-md rounded-bl-none rounded-br-none relative group'>
-            <img src={props.img} className='w-full group-hover:scale-[1.1] transition-all duration-200'/>
+        <div className='group imgWrapper w-[100%] overflow-hidden rounded-md rounded-bl-none rounded-br-none relative'>
+            <img src={Product1} className='w-full group-hover:scale-[1.1] transition-all duration-200'/>
             <span class="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-primary text-white rounded-lg p-1 text-[12px] font-[500]">14%</span>
             <div className='action flex items-center top-[-200px] right-[5px] z-50 flex-col w-[50px] absolute gap-2 group-hover:top-[15px] opacity-0 group-hover:opacity-100 transition-all duration-300'>
               <Button className='!w-[35px] !h-[35px] !min-w-[35px] !bg-white !rounded-full hover:!bg-primary hover:!text-white group'>

@@ -1,2 +1,7 @@
 
 .sidebar .scroll{max-height: 200px; overflow-y: scroll; overflow-x: hidden;}
+
+.sidebar .scroll::-webkit-scrollbar{width: 8px !important; height: 8px !important; scroll-behavior: smooth !important;}
+.sidebar .scroll::-webkit-scrollbar-thumb{background-color: rgb(180, 179, 179); border-radius: 20px;}
+.range-slider .range-slider__thumb {height: 14px !important; width: 14px !important; background: #ff5252 !important;}
+.range-slider .range-slider__range{height: 6px !important; background: #ff5252 !important;}

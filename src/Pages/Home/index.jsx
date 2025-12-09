@@ -72,10 +72,6 @@ const Home = () => {
           <AdsBannerSlider items={4} />
         </div>
       </section>
-
-      <section>
-        <Footer />
-      </section>
     </>
   );
 };
