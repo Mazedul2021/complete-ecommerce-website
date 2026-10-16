@@ -3,135 +3,44 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import cat1 from "../../assets/Image/category/1.png";
-import cat2 from "../../assets/Image/category/2.png";
-import cat3 from "../../assets/Image/category/3.png";
-import cat4 from "../../assets/Image/category/4.png";
-import cat5 from "../../assets/Image/category/5.png";
-import cat6 from "../../assets/Image/category/6.png";
-import cat7 from "../../assets/Image/category/7.png";
-import cat8 from "../../assets/Image/category/8.png";
-
+import { categories } from "../../data/categories";
 import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 
 const HomeCatSlider = () => {
   return (
-    <div className="homeCatSlider">
+    <div className="homeCatSlider pt-1">
       <div className="container">
         <Swiper
           slidesPerView={8}
-          spaceBetween={30}
+          spaceBetween={20}
           navigation={true}
           modules={[Navigation]}
           className="mySwiper mb-5"
+          breakpoints={{
+            0: { slidesPerView: 3 },
+            480: { slidesPerView: 4 },
+            640: { slidesPerView: 5 },
+            768: { slidesPerView: 6 },
+            1024: { slidesPerView: 8 },
+          }}
         >
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat1}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat2}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat3}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat4}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat5}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat6}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat7}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Link to="/">
-              <div className="item py-4 lg:py-7 px-3 bg-white rounbded-sm text-center flex items-center justify-center flex-col transition-all">
-                <img
-                  src={cat8}
-                  className="w-[60px]"
-                />
-                <h3 class="text-[12px] lg:text-[15px] font-[500] mt-3">
-                  Fashion
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
-          
-          
+          {categories.map((cat) => (
+            <SwiperSlide key={cat.id}>
+              <Link to={`/shop?category=${cat.slug}`}>
+                <div className="item py-4 lg:py-6 px-2 bg-white rounded-md text-center flex items-center justify-center flex-col transition-all border border-transparent hover:border-[#ff5252]/30 hover:shadow-lg group cursor-pointer">
+                  <img
+                    src={cat.img}
+                    alt={cat.name}
+                    className="w-[60px] h-[60px] object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <h3 className="text-[11px] lg:text-[13px] font-[500] mt-3 group-hover:text-[#ff5252] transition-colors">
+                    {cat.name}
+                  </h3>
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>

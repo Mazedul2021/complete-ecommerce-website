@@ -62,3 +62,47 @@ footer form input::placeholder{font-size: 14px;}
 
 .itemViewActions button.active svg{color: #ff5252 !important; opacity: 1;}
 .Mui-selected.MuiPaginationItem-page{background: #ff5252 !important; color: #fff !important;}
+
+/* ===== Swiper navigation buttons ===== */
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev {
+    width: 42px;
+    height: 42px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.18);
+    color: #333;
+    transition: all .2s ease;
+}
+
+.mySwiper .swiper-button-next:hover,
+.mySwiper .swiper-button-prev:hover {
+    background: #ff5252;
+    color: #fff;
+}
+
+.mySwiper .swiper-button-next::after,
+.mySwiper .swiper-button-prev::after {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.sliderHome .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    opacity: .6;
+}
+
+.sliderHome .swiper-pagination-bullet-active {
+    background: #ff5252;
+    opacity: 1;
+    width: 26px;
+    border-radius: 6px;
+    transition: all .3s ease;
+}
+
+/* Smooth scrollbar for menus */
+.catDropdown ul::-webkit-scrollbar { width: 5px; }
+.catDropdown ul::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
+.catDropdown ul::-webkit-scrollbar-track { background: transparent; }

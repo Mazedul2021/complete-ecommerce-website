@@ -1,10 +1,93 @@
+/* ===== Interactive category menu styles ===== */
 
-.nav li .submenu{visibility: hidden; z-index: 1000;}
-.nav li:hover .submenu{opacity: 1 !important; visibility: inherit; top: 100%;}
-.nav li .submenu li:hover button{color: #ff5252 !important;}
+/* All-Categories dropdown panel */
+.catDropdown {
+  animation: catFadeDown 0.25s ease both;
+}
 
-.nav li .submenu li .submenu{top: 0% !important; left: 120% !important; opacity: 0 !important;}
-.nav li .submenu li:hover .submenu{left: 100% !important; opacity: 1 !important;}
+@keyframes catFadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-.nav li .submenu li .submenu button{color: rgba(0,0,0,0.8) !important;}
-.nav li .submenu li .submenu button:hover{color: #ff5252 !important;}
+/* Row-level flyout (category -> subcategories) */
+.catRow .flyout {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  pointer-events: none;
+}
+
+.catRow:hover > .flyout {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.catRow .rowArrow {
+  transition: transform 0.2s ease;
+}
+
+.catRow:hover .rowArrow {
+  transform: translateX(3px);
+  color: #ff5252;
+}
+
+/* Nav mega menus (hover reveal) */
+.nav li > .megaMenu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  pointer-events: none;
+}
+
+.nav li:hover > .megaMenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav li:hover > a > .navLabel,
+.nav li:hover > button .navLabel {
+  color: #ff5252;
+}
+
+.megaMenu .megaCol a {
+  display: block;
+  padding: 4px 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.megaMenu .megaCol a:hover {
+  color: #ff5252;
+  transform: translateX(3px);
+}
+
+/* Accent underline for section titles */
+.titleUnderline {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.titleUnderline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 55px;
+  height: 3px;
+  border-radius: 3px;
+  background: #ff5252;
+}

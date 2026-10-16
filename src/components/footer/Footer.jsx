@@ -77,33 +77,33 @@ const Footer = () => {
                 <h2 className="text-[18px] font-[600] mb-4">Products</h2>
                 <ul className="list">
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/shop?sort=discount">
                       Prices drop
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/shop?sort=latest">
                       New products
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/shop?sort=rating">
                       Best sales
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/contact">
                       Contact us
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
-                      Sitemap
+                    <Link className="link" to="/help-center">
+                      Help Center
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
-                      Stores
+                    <Link className="link" to="/order-tracking">
+                      Order Tracking
                     </Link>
                   </li>
                 </ul>
@@ -112,32 +112,32 @@ const Footer = () => {
                 <h2 className="text-[18px] font-[600] mb-4">Our company</h2>
                 <ul className="list">
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/help-center">
                       Delivery
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/help-center">
                       Legal Notice
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/help-center">
                       Terms and conditions of use
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/about">
                       About us
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/help-center">
                       Secure payment
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/">
+                    <Link className="link" to="/login">
                       Login
                     </Link>
                   </li>
