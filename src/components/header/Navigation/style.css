@@ -10,6 +10,7 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -25,7 +26,7 @@
   pointer-events: none;
 }
 
-.catRow:hover > .flyout {
+.catRow:hover>.flyout {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
@@ -42,7 +43,7 @@
 }
 
 /* Nav mega menus (hover reveal) */
-.nav li > .megaMenu {
+.nav li>.megaMenu {
   opacity: 0;
   visibility: hidden;
   transform: translateY(12px);
@@ -50,15 +51,15 @@
   pointer-events: none;
 }
 
-.nav li:hover > .megaMenu {
+.nav li:hover>.megaMenu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.nav li:hover > a > .navLabel,
-.nav li:hover > button .navLabel {
+.nav li:hover>a>.navLabel,
+.nav li:hover>button .navLabel {
   color: #ff5252;
 }
 
@@ -90,4 +91,309 @@
   height: 3px;
   border-radius: 3px;
   background: #ff5252;
+}
+
+/* ==========================================
+   OLEVS WATCH SHOP — MODERN MEGA SUBMENU
+   Theme: Rose Red + Dark Navy + Slate
+   Parent category menu remains unchanged
+========================================== */
+
+/* Mega submenu container */
+.catRow .flyout {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px 26px;
+
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.12),
+    0 5px 15px rgba(15, 23, 42, 0.05);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(8px);
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s ease;
+
+  z-index: 999;
+}
+
+/* Smooth submenu hover */
+.catRow:hover>.flyout,
+.catRow:focus-within>.flyout {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Mega menu header */
+.catRow .flyout h4 {
+  color: #0f172a;
+  font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+
+  margin: 0;
+  padding-bottom: 13px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* View all link */
+.catRow .flyout>div:first-child>a {
+  color: #e11d48;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    gap 0.2s ease;
+}
+
+.catRow .flyout>div:first-child>a:hover {
+  color: #be123c;
+  text-decoration: underline;
+}
+
+/* Subcategory column */
+.catRow .megaCol {
+  min-width: 0;
+}
+
+/* Subcategory heading */
+.catRow .megaCol>a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #0f172a !important;
+  font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.5;
+
+  padding: 4px 0 7px !important;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+/* Rose-red accent */
+.catRow .megaCol>a::before {
+  content: "";
+  display: inline-block;
+
+  width: 3px;
+  height: 15px;
+  flex-shrink: 0;
+
+  background: #e11d48;
+  border-radius: 999px;
+
+  transition:
+    height 0.2s ease,
+    background 0.2s ease;
+}
+
+/* Subcategory heading hover */
+.catRow .megaCol>a:hover {
+  color: #e11d48 !important;
+}
+
+.catRow .megaCol>a:hover::before {
+  height: 19px;
+  background: #be123c;
+}
+
+/* Child category list */
+.catRow .megaCol ul {
+  margin: 5px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Child links */
+.catRow .megaCol ul li a {
+  display: block;
+
+  color: #475569;
+  font-family: "Plus Jakarta Sans", "Montserrat", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+
+  padding: 7px 10px;
+  margin: 2px 0;
+
+  border-radius: 6px;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+/* Child link hover */
+.catRow .megaCol ul li a:hover {
+  color: #e11d48;
+  background: #fff1f2;
+  padding-left: 15px;
+}
+
+/* Accessible keyboard focus */
+.catRow .flyout a:focus-visible {
+  outline: 2px solid #e11d48;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Preserve submenu overflow */
+.catDropdown,
+.catRow {
+  overflow: visible;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  .catRow .flyout,
+  .catRow .megaCol a {
+    transition: none;
+  }
+}
+
+/* ===== SAFE MEGA MENU FIX ===== */
+
+/* Keep navigation layout intact */
+nav.nav>.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Only target the navigation links list */
+nav.nav>.container>.col-2>ul.nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  flex-wrap: nowrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Keep each navigation item in normal horizontal flow */
+nav.nav>.container>.col-2>ul.nav>li {
+  position: relative;
+  flex-shrink: 0;
+  list-style: none;
+}
+
+/* Hide submenu without affecting the main navigation */
+nav.nav>.container>.col-2>ul.nav>li>.megaMenu {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+  z-index: 1000;
+}
+
+/* Reveal submenu on hover or keyboard focus */
+nav.nav>.container>.col-2>ul.nav>li:hover>.megaMenu,
+nav.nav>.container>.col-2>ul.nav>li:focus-within>.megaMenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Submenu link appearance */
+nav.nav .megaMenu ul {
+  list-style: none;
+  margin-top: 8px;
+  padding: 0;
+}
+
+nav.nav .megaMenu ul li a {
+  display: block;
+  padding: 6px 0;
+  color: #475569;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+nav.nav .megaMenu ul li a:hover {
+  color: #e11d48;
+}
+
+/* Responsive safety */
+@media (max-width: 1023px) {
+  nav.nav>.container>.col-2>ul.nav {
+    flex-wrap: wrap;
+  }
+
+  nav.nav>.container>.col-2>ul.nav>li>.megaMenu {
+    display: none;
+  }
+}
+
+/* ===== Navigation Hover Background ===== */
+
+/* Main navigation links */
+nav.nav>.container>.col-2>ul.nav>li>a {
+  display: block;
+  border-radius: 7px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+nav.nav>.container>.col-2>ul.nav>li>a:hover {
+  background-color: #fff1f2;
+  border-radius: 7px;
+}
+
+/* MUI buttons inside navigation */
+nav.nav>.container>.col-2>ul.nav>li>a>button {
+  border-radius: 7px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+nav.nav>.container>.col-2>ul.nav>li>a:hover>button {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+
+/* Category and Shop mega-menu headings */
+nav.nav .megaMenu>div>div>a:hover {
+  background-color: #fff1f2;
+  color: #e11d48 !important;
+  border-radius: 6px;
+}
+
+/* Subcategory links */
+nav.nav .megaMenu .megaCol ul li a:hover,
+nav.nav .megaMenu ul li a:hover {
+  background-color: #fff1f2;
+  color: #e11d48;
+  border-radius: 6px;
+  padding-left: 10px;
+}
+
+/* Smooth hover for all submenu links */
+nav.nav .megaMenu a {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    padding-left 0.2s ease;
 }
