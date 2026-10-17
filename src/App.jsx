@@ -19,6 +19,8 @@ import Footer from "./components/footer/Footer";
 import CartDrawer from "./components/CartDrawer/CartDrawer";
 import MobileNav from "./components/MobileNav/MobileNav";
 import { ScrollToTop, BackToTop } from "./components/ScrollToTop/ScrollToTop";
+import QuickViewModal from "./components/QuickViewModal/QuickViewModal";
+import ToastNotification from "./components/Toast/ToastNotification";
 
 function App() {
   return (
@@ -46,6 +48,8 @@ function App() {
         <Footer />
         <CartDrawer />
         <MobileNav />
+        <QuickViewModal />
+        <ToastNotification />
         <BackToTop />
       </BrowserRouter>
     </StoreProvider>

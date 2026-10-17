@@ -8,101 +8,246 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .root {
     text-decoration: none;
     list-style: none;
 }
 
 body {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-     background: #f5f0f0;
-    color: rgba(0, 0, 0, 0.9);
+    font-family: "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -0.02em;
 }
 
 .container {
-    width: 90%;
+    width: 92%;
+    max-width: 1320px;
     margin: auto;
 }
 
+/* Link transitions */
+.link {
+    transition: color 0.2s ease;
+}
 .link:hover {
-    color: #ff5252
+    color: #e11d48;
 }
 
+/* Luxury heading decoration */
+.titleUnderline {
+    position: relative;
+    display: inline-block;
+}
+.titleUnderline::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, #e11d48 0%, #f59e0b 100%);
+    border-radius: 999px;
+}
+
+/* MUI Custom overrides */
 .MuiBadge-badge {
-    background-color: #ff5252 !important;
+    background-color: #e11d48 !important;
+    color: #fff !important;
+    font-weight: 600 !important;
 }
 
 nav ul button:hover {
     background: none !important;
 }
 
-.MuiTabs-indicator{background-color: #ff5252 !important;}
-.MuiTab-textColorPrimary.Mui-selected{color: #ff5252 !important;}
-
-.homeCatSlider .item:hover img{transform:scale(1.1);}
-
-.productsSlider .swiper-wrapper{padding: 15px; margin-left: -15px; margin-right: -15px;}
-
-.btn-org{background: #ff5252 !important; color: #fff !important; font-weight: 500; font-size: 16px; padding: 7px 20px !important;}
-.btn-org:hover{background: #116b34 !important;}
-footer form input::placeholder{font-size: 14px;}
-
-.css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root.Mui-checked, .css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
-    color: #ff5252 !important;
+.MuiTabs-indicator {
+    background: linear-gradient(90deg, #e11d48, #f43f5e) !important;
+    height: 3px !important;
+    border-radius: 3px !important;
 }
-.MuiFormControlLabel-label{font-size: 13px !important; color: rgba(0, 0, 0, 0.9);}
+.MuiTab-textColorPrimary.Mui-selected {
+    color: #e11d48 !important;
+    font-weight: 700 !important;
+}
+
+.homeCatSlider .item:hover img {
+    transform: scale(1.12);
+}
+
+.productsSlider .swiper-wrapper {
+    padding: 15px 5px;
+}
+
+/* Luxury button styling */
+.btn-org {
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 9px 24px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25) !important;
+    transition: all 0.25s ease !important;
+    text-transform: none !important;
+}
+.btn-org:hover {
+    background: linear-gradient(135deg, #be123c 0%, #9f1239 100%) !important;
+    box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35) !important;
+    transform: translateY(-1px);
+}
+
+.btn-luxury-outline {
+    border: 1px solid #0f172a !important;
+    color: #0f172a !important;
+    font-weight: 600 !important;
+    padding: 8px 20px !important;
+    border-radius: 8px !important;
+    transition: all 0.25s ease !important;
+    text-transform: none !important;
+}
+.btn-luxury-outline:hover {
+    border-color: #e11d48 !important;
+    color: #e11d48 !important;
+    background: #fff1f2 !important;
+}
+
+footer form input::placeholder {
+    font-size: 14px;
+}
+
+.css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root.Mui-checked, 
+.css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+    color: #e11d48 !important;
+}
+.MuiFormControlLabel-label {
+    font-size: 13px !important;
+    color: #334155 !important;
+}
 
 .ReactCollapse--collapse {
-  transition: height 500ms;
+    transition: height 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.MuiCheckbox-root{padding: 6px !important;}
+.MuiCheckbox-root {
+    padding: 6px !important;
+}
 
-.itemViewActions button.active svg{color: #ff5252 !important; opacity: 1;}
-.Mui-selected.MuiPaginationItem-page{background: #ff5252 !important; color: #fff !important;}
+.itemViewActions button.active svg {
+    color: #e11d48 !important;
+    opacity: 1;
+}
+.Mui-selected.MuiPaginationItem-page {
+    background: #e11d48 !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+}
 
 /* ===== Swiper navigation buttons ===== */
 .mySwiper .swiper-button-next,
 .mySwiper .swiper-button-prev {
-    width: 42px;
-    height: 42px;
-    background: #fff;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
     border-radius: 50%;
-    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.18);
-    color: #333;
-    transition: all .2s ease;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: #1e293b;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mySwiper .swiper-button-next:hover,
 .mySwiper .swiper-button-prev:hover {
-    background: #ff5252;
-    color: #fff;
+    background: #e11d48;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
+    transform: scale(1.08);
 }
 
 .mySwiper .swiper-button-next::after,
 .mySwiper .swiper-button-prev::after {
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
 }
 
 .sliderHome .swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
-    background: #fff;
-    opacity: .6;
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    opacity: 0.6;
+    transition: all 0.3s ease;
 }
 
 .sliderHome .swiper-pagination-bullet-active {
-    background: #ff5252;
+    background: #e11d48;
     opacity: 1;
-    width: 26px;
+    width: 28px;
     border-radius: 6px;
-    transition: all .3s ease;
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.6);
 }
 
-/* Smooth scrollbar for menus */
-.catDropdown ul::-webkit-scrollbar { width: 5px; }
-.catDropdown ul::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
-.catDropdown ul::-webkit-scrollbar-track { background: transparent; }
+/* Range slider custom styling */
+.range-slider .range-slider__range {
+    background: #e11d48 !important;
+}
+.range-slider .range-slider__thumb {
+    background: #e11d48 !important;
+    box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4) !important;
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Glassmorphism helpers */
+.glass-header {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* Modern Card Hover */
+.watch-card {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease;
+}
+.watch-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -4px rgba(15, 23, 42, 0.1), 0 8px 16px -4px rgba(15, 23, 42, 0.05);
+    border-color: rgba(225, 29, 72, 0.2);
+}
+
+/* Pulse animation */
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.3); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.3); }
+    70% { transform: scale(1); }
+}
+
+.heart-beat {
+    animation: heartBeat 1.3s ease-in-out;
+}

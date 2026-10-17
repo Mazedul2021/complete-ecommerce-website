@@ -1,128 +1,156 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "@mui/material/Rating";
-import "./style.css";
-import { FaRegHeart, FaHeart, FaCartPlus } from "react-icons/fa";
-import { MdOutlineZoomOutMap } from "react-icons/md";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { MdOutlineZoomOutMap } from "react-icons/md";
+import { IoCartOutline, IoCheckmark, IoFlash } from "react-icons/io5";
 import { useStore } from "../../context/StoreContext";
 import { formatPrice, discountPercent } from "../../utils/format";
 
 const ProductItemListView = ({ product }) => {
-  const { addToCart, toggleWishlist, isInWishlist } = useStore();
+  const { addToCart, toggleWishlist, isInWishlist, openQuickView } = useStore();
+  const [addedAnimation, setAddedAnimation] = useState(false);
+
   const disc = discountPercent(product.price, product.oldPrice);
   const inWishlist = isInWishlist(product.id);
 
+  const handleQuickAdd = () => {
+    addToCart(product, 1);
+    setAddedAnimation(true);
+    setTimeout(() => setAddedAnimation(false), 1200);
+  };
+
   return (
-    <div className="productItem p-4 shadow-sm hover:shadow-lg transition-all duration-200 rounded-md overflow-hidden border border-[rgba(0,0,0,0.1)] bg-white flex items-center flex-col lg:flex-row">
-      <div className="group imgWrapper w-full lg:w-[22%] overflow-hidden rounded-md relative">
-        <Link to={`/product/${product.id}`}>
-          <div className="img h-[220px] overflow-hidden bg-[#f7f7f7]">
-            <img
-              src={product.images[0]}
-              alt={product.name}
-              className="w-full h-full object-cover group-hover:scale-[1.08] transition-all duration-500"
-            />
-          </div>
+    <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_20px_35px_-4px_rgba(15,23,42,0.1)] hover:-translate-y-1 transition-all duration-300 p-4 sm:p-5 flex flex-col md:flex-row gap-5 items-center">
+      {/* Image Area */}
+      <div className="relative w-full md:w-[240px] h-[220px] rounded-xl overflow-hidden bg-gradient-to-b from-slate-50 to-white border border-slate-100 shrink-0 flex items-center justify-center p-3">
+        <Link to={`/product/${product.id}`} className="w-full h-full flex items-center justify-center">
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+          />
         </Link>
+
         {disc > 0 && (
-          <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-primary text-white rounded-lg p-1 px-2 text-[12px] font-[500]">
-            {disc}%
+          <span className="absolute top-3 left-3 bg-gradient-to-r from-rose-600 to-rose-500 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+            <IoFlash /> -{disc}%
           </span>
         )}
-        <div className="action flex items-center top-[-200px] right-[5px] z-50 flex-col w-[50px] absolute gap-2 group-hover:top-[15px] opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <Tooltip title="View details">
-            <Link to={`/product/${product.id}`}>
-              <Button className="!w-[35px] !h-[35px] !min-w-[35px] !bg-white !rounded-full hover:!bg-primary hover:!text-white group">
-                <MdOutlineZoomOutMap className="!text-[18px]" />
-              </Button>
-            </Link>
-          </Tooltip>
-          <Tooltip title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}>
-            <Button
-              onClick={() => toggleWishlist(product)}
-              className={`!w-[35px] !h-[35px] !min-w-[35px] !bg-white !rounded-full hover:!bg-primary hover:!text-white group ${
-                inWishlist ? "!text-[#ff5252]" : ""
-              }`}
+
+        {/* Quick View Button */}
+        <div className="absolute top-3 right-3 flex flex-col gap-2">
+          <Tooltip title="Quick View">
+            <button
+              onClick={() => openQuickView(product)}
+              className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md shadow-md text-slate-700 hover:bg-slate-900 hover:text-white flex items-center justify-center transition"
+              aria-label="Quick view"
             >
-              {inWishlist ? (
-                <FaHeart className="!text-[16px]" />
-              ) : (
-                <FaRegHeart className="!text-[18px]" />
-              )}
-            </Button>
+              <MdOutlineZoomOutMap className="text-[17px]" />
+            </button>
           </Tooltip>
         </div>
       </div>
 
-      <div className="info p-3 lg:px-6 py-3 w-full lg:w-[78%]">
-        <h6 className="text-[11px] !font-[600] uppercase text-[#ff5252] tracking-wide">
-          {product.brand}
-        </h6>
-        <h3 className="text-[14px] lg:text-[18px] title mt-1 mb-2 font-[500] text-[#000]">
-          <Link to={`/product/${product.id}`} className="link">
-            {product.name}
-          </Link>
-        </h3>
-        <div className="flex items-center gap-2 mb-2">
-          <Rating
-            value={product.rating}
-            size="small"
-            precision={0.1}
-            readOnly
-          />
-          <span className="text-[12px] text-[rgba(0,0,0,0.45)]">
-            ({product.reviews} reviews)
-          </span>
+      {/* Info Area */}
+      <div className="flex-1 min-w-0 w-full flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md">
+              {product.brand}
+            </span>
+            {product.stock > 0 ? (
+              <span className="text-[12px] font-semibold text-emerald-600">
+                ● In Stock ({product.stock})
+              </span>
+            ) : (
+              <span className="text-[12px] font-semibold text-rose-500">
+                ● Out of Stock
+              </span>
+            )}
+          </div>
+
+          <h3 className="text-[16px] sm:text-[18px] font-bold text-slate-900 mt-2 hover:text-rose-600 transition-colors">
+            <Link to={`/product/${product.id}`}>{product.name}</Link>
+          </h3>
+
+          <div className="flex items-center gap-2 mt-2">
+            <Rating value={product.rating} precision={0.1} size="small" readOnly />
+            <span className="text-[12.5px] font-bold text-slate-700">
+              {product.rating}
+            </span>
+            <span className="text-[12px] text-slate-400">
+              ({product.reviews} reviews)
+            </span>
+          </div>
+
+          <p className="text-[13.5px] text-slate-600 mt-2.5 line-clamp-2 leading-relaxed">
+            {product.description}
+          </p>
+
+          {/* Quick Specs Chips */}
+          <div className="flex flex-wrap items-center gap-2 mt-3">
+            <span className="text-[11.5px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">
+              Strap: <b className="text-slate-900">{product.strap}</b>
+            </span>
+            <span className="text-[11.5px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">
+              Movement: <b className="text-slate-900">{product.movement}</b>
+            </span>
+            <span className="text-[11.5px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">
+              Water Resist: <b className="text-slate-900">{product.waterResist}</b>
+            </span>
+          </div>
         </div>
-        <p className="text-[13.5px] mb-3 text-[rgba(0,0,0,0.6)] line-clamp-2">
-          {product.description}
-        </p>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
-          {[
-            ["Strap", product.strap],
-            ["Movement", product.movement],
-            ["Water Resist", product.waterResist],
-          ].map(([k, v]) => (
-            <span
-              key={k}
-              className="text-[11.5px] bg-[#f5f5f5] rounded px-2 py-0.5 text-[rgba(0,0,0,0.6)]"
-            >
-              {k}: <b className="font-[600]">{v}</b>
+
+        {/* Pricing & CTA */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-5 pt-4 border-t border-slate-100">
+          <div className="flex items-baseline gap-2.5">
+            <span className="text-[20px] sm:text-[22px] font-extrabold text-rose-600">
+              {formatPrice(product.price)}
             </span>
-          ))}
-        </div>
-        <div className="flex flex-wrap items-center gap-4">
-          <span className="oldPrice line-through text-gray-500 text-[13px] font-[500]">
-            {formatPrice(product.oldPrice)}
-          </span>
-          <span className="price text-primary text-[15px] lg:text-[18px] font-[700]">
-            {formatPrice(product.price)}
-          </span>
-          {product.stock > 0 ? (
-            <span className="text-[12px] text-green-600 font-[500]">
-              ● In Stock ({product.stock})
-            </span>
-          ) : (
-            <span className="text-[12px] text-red-500 font-[500]">
-              ● Out of Stock
-            </span>
-          )}
-          <div className="ml-auto flex items-center gap-2">
-            <Button
+            {product.oldPrice > product.price && (
+              <span className="text-[14px] text-slate-400 line-through">
+                {formatPrice(product.oldPrice)}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <button
               onClick={() => toggleWishlist(product)}
-              className="!normal-case gap-2 !text-[13px] !border !border-[rgba(0,0,0,0.15)] !text-black hover:!border-primary"
+              className={`px-3.5 py-2.5 rounded-xl border text-[13px] font-semibold flex items-center gap-1.5 transition ${
+                inWishlist
+                  ? "bg-rose-50 border-rose-300 text-rose-600"
+                  : "border-slate-200 text-slate-700 hover:border-slate-300"
+              }`}
             >
-              {inWishlist ? <FaHeart className="text-[#ff5252]" /> : <FaRegHeart />}
-              {inWishlist ? "Wishlisted" : "Wishlist"}
-            </Button>
-            <Button
-              onClick={() => addToCart(product)}
-              className="btn-org gap-2 !normal-case !text-[13px]"
+              {inWishlist ? (
+                <FaHeart className="text-rose-600" />
+              ) : (
+                <FaRegHeart />
+              )}
+              <span>{inWishlist ? "Saved" : "Save"}</span>
+            </button>
+
+            <button
+              onClick={handleQuickAdd}
+              className={`py-2.5 px-5 rounded-xl font-bold text-[13px] flex items-center gap-2 transition shadow-md active:scale-95 ${
+                addedAnimation
+                  ? "bg-emerald-600 text-white shadow-emerald-600/30"
+                  : "bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white shadow-rose-600/25"
+              }`}
             >
-              <FaCartPlus className="text-[16px]" /> Add to Cart
-            </Button>
+              {addedAnimation ? (
+                <>
+                  <IoCheckmark className="text-[17px]" /> Added!
+                </>
+              ) : (
+                <>
+                  <IoCartOutline className="text-[17px]" /> Add to Cart
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>

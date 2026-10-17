@@ -1,16 +1,9 @@
-import React from "react";
-import { TbTruckDelivery } from "react-icons/tb";
-import { PiKeyReturnLight } from "react-icons/pi";
-import { MdPayment } from "react-icons/md";
-import { IoGiftOutline } from "react-icons/io5";
-import { BiSupport } from "react-icons/bi";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
-
-import { FaFacebookF } from "react-icons/fa";
-import { CiYoutube } from "react-icons/ci";
-import { FaInstagram } from "react-icons/fa";
-import { FaTiktok } from "react-icons/fa";
+import { TbTruckDelivery, TbShieldCheck, TbHeadset, TbRotateClockwise2 } from "react-icons/tb";
+import { IoGiftOutline, IoCheckmarkCircle } from "react-icons/io5";
+import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
+import { useStore } from "../../context/StoreContext";
 
 import pm1 from "../../assets/Image/bottomstrip/carte_bleue.png";
 import pm2 from "../../assets/Image/bottomstrip/visa.png";
@@ -18,183 +11,251 @@ import pm3 from "../../assets/Image/bottomstrip/master_card.png";
 import pm4 from "../../assets/Image/bottomstrip/american_express.png";
 import pm5 from "../../assets/Image/bottomstrip/paypal.png";
 
-
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-
 const Footer = () => {
+  const { showToast } = useStore();
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) {
+      showToast({
+        type: "info",
+        title: "Please Enter a Valid Email",
+        message: "We need your email to send exclusive VIP discounts.",
+      });
+      return;
+    }
+    setSubscribed(true);
+    showToast({
+      type: "success",
+      title: "Welcome to the VIP Club! 🎉",
+      message: "Check your inbox for your 10% coupon: OLEVS10",
+    });
+  };
+
   return (
     <>
-      <footer className="py-6 bg-[#fafafa]">
+      <footer className="bg-slate-950 text-slate-300 pt-12 pb-6 border-t border-slate-800">
         <div className="container">
-          <div className="flex items-center justify-center gap-2 py-3 lg:py-8 pb-0 lg:pb-8 px-0 lg:px-5 scrollableBox footerBoxWrap">
-            <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <TbTruckDelivery className="text-[60px] transition-all duration-300 group-hover:-translate-y-1 group-hover:text-primary " />
-              <h3 className="text-[16px] font-[600] mt-3">Fastest Delivery</h3>
-              <p className="text-[12px] font-[500]">All over Bangladesh</p>
+          {/* Top Value Badges */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-12 border-b border-slate-800/80">
+            <div className="flex items-center gap-3.5 group">
+              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-rose-500 group-hover:scale-110 group-hover:border-rose-500/40 transition-all">
+                <TbTruckDelivery className="text-[26px]" />
+              </div>
+              <div>
+                <h4 className="text-[14px] font-bold text-white">Fastest Delivery</h4>
+                <p className="text-[12px] text-slate-400">All across Bangladesh</p>
+              </div>
             </div>
-            <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <PiKeyReturnLight className="text-[60px] transition-all duration-300 group-hover:-translate-y-1 group-hover:text-primary " />
-              <h3 className="text-[16px] font-[600] mt-3">30 Days Returns</h3>
-              <p className="text-[12px] font-[500]">For an Exchange Product</p>
+
+            <div className="flex items-center gap-3.5 group">
+              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-amber-500 group-hover:scale-110 group-hover:border-amber-500/40 transition-all">
+                <TbRotateClockwise2 className="text-[26px]" />
+              </div>
+              <div>
+                <h4 className="text-[14px] font-bold text-white">7-Day Easy Return</h4>
+                <p className="text-[12px] text-slate-400">Hassle-free exchange</p>
+              </div>
             </div>
-            <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <MdPayment className="text-[60px] transition-all duration-300 group-hover:-translate-y-1 group-hover:text-primary " />
-              <h3 className="text-[16px] font-[600] mt-3">Secured Payment</h3>
-              <p className="text-[12px] font-[500]">Payment Cards Accepted</p>
+
+            <div className="flex items-center gap-3.5 group">
+              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-500 group-hover:scale-110 group-hover:border-emerald-500/40 transition-all">
+                <TbShieldCheck className="text-[26px]" />
+              </div>
+              <div>
+                <h4 className="text-[14px] font-bold text-white">Official Warranty</h4>
+                <p className="text-[12px] text-slate-400">100% genuine products</p>
+              </div>
             </div>
-            <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <IoGiftOutline className="text-[60px] transition-all duration-300 group-hover:-translate-y-1 group-hover:text-primary " />
-              <h3 className="text-[16px] font-[600] mt-3">Special Gifts</h3>
-              <p className="text-[12px] font-[500]">Our First Product Order</p>
-            </div>
-            <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <BiSupport className="text-[60px] transition-all duration-300 group-hover:-translate-y-1 group-hover:text-primary " />
-              <h3 className="text-[16px] font-[600] mt-3">Support 24/7</h3>
-              <p className="text-[12px] font-[500]">Contact us Anytime</p>
+
+            <div className="flex items-center gap-3.5 group">
+              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-500 group-hover:scale-110 group-hover:border-blue-500/40 transition-all">
+                <TbHeadset className="text-[26px]" />
+              </div>
+              <div>
+                <h4 className="text-[14px] font-bold text-white">24/7 Dedicated Support</h4>
+                <p className="text-[12px] text-slate-400">Instant response team</p>
+              </div>
             </div>
           </div>
-          <br />
-          <hr />
 
-          <div className="footer flex px-3 lg:px-0 flex-col lg:flex-row py-8">
-            <div className="part1 w-full lg:w-[25%] border-r border-[rgba(0,0,0,0.1)]">
-              <h2 className="text-[18px] font-[600] mb-4">Contact Us</h2>
-              <p className="text-[13px] font-[400] pb-4">
-                Ows-The Premium Watches <br /> Sha-38/1, Middle Badda,
-                Dhaka-1212
-              </p>
-              <Link to="mailto:contact@ows.com" className="link text-[13px]">
-                contact@olevswatchshop.com
-              </Link>
-              <span className="text-[22px] font-[600] block w-full mt-3 mb-5 text-primary">
-                (+880) 1799018864
-              </span>
-            </div>
-            <div className="part2  w-full lg:w-[40%] flex pl-0 lg:pl-8 mt-5 lg:mt-0">
-              <div className="part2_col1 w-[50%]">
-                <h2 className="text-[18px] font-[600] mb-4">Products</h2>
-                <ul className="list">
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/shop?sort=discount">
-                      Prices drop
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/shop?sort=latest">
-                      New products
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/shop?sort=rating">
-                      Best sales
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/contact">
-                      Contact us
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/help-center">
-                      Help Center
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/order-tracking">
-                      Order Tracking
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="part2_col2 w-[50%]">
-                <h2 className="text-[18px] font-[600] mb-4">Our company</h2>
-                <ul className="list">
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/help-center">
-                      Delivery
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/help-center">
-                      Legal Notice
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/help-center">
-                      Terms and conditions of use
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/about">
-                      About us
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/help-center">
-                      Secure payment
-                    </Link>
-                  </li>
-                  <li className="list-none text-[14px] w-full mb-2">
-                    <Link className="link" to="/login">
-                      Login
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="part2  w-full lg:w-[35%] flex pl-0 lg:pl-8 flex-col pr-8 mt-5 lg:mt-0">
-              <h2 className="text-[18px] font-[600] mb-2 lg:mb-4">
-                Subscribe to newsletter
-              </h2>
-              <p className="text-[13px]">
-                Subscribe to our latest newsletter to get news about special
-                discounts.
-              </p>
-              <form className="mt-5">
-                <input
-                  type="text"
-                  className="w-full h-[45px] border outline-none pl-4 pr-4 rounded-sm mb-4 focus:border-[rgba(0,0,0,0.3)]"
-                  placeholder="Your Email Address"
-                ></input>
-                <Button className="btn-org">SUBSCRIBE</Button>
-                <span className="MuiTouchRipple-root"></span>
-                <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label=" I agree to the terms and conditions and the privacy policy"
+          {/* Main Footer Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 py-10">
+            {/* Col 1: About & Contact */}
+            <div className="lg:col-span-2 space-y-4">
+              <Link to="/">
+                <img
+                  src="/logo.webp"
+                  alt="OLEVS Watch Shop"
+                  className="w-[140px] h-auto brightness-200 contrast-125 mb-3"
                 />
-              </form>
+              </Link>
+              <p className="text-[13px] text-slate-400 max-w-sm leading-relaxed">
+                Your premier destination for authentic luxury skeleton timepieces, automatic movements, and contemporary chronographs in Bangladesh.
+              </p>
+
+              <div className="pt-2 text-[13px] text-slate-300 space-y-1">
+                <p>Sha-38/1, Middle Badda, Gulshan Link Road, Dhaka-1212</p>
+                <p>
+                  Hotline:{" "}
+                  <a
+                    href="tel:+8801799018864"
+                    className="font-bold text-rose-400 hover:text-rose-300 transition"
+                  >
+                    (+880) 1799018864
+                  </a>
+                </p>
+                <p>
+                  Email:{" "}
+                  <a
+                    href="mailto:contact@olevswatchshop.com"
+                    className="text-slate-400 hover:text-white transition"
+                  >
+                    contact@olevswatchshop.com
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            {/* Col 2: Collections */}
+            <div>
+              <h4 className="text-[15px] font-bold text-white mb-4 tracking-wide">
+                Collections
+              </h4>
+              <ul className="space-y-2.5 text-[13px]">
+                <li>
+                  <Link to="/shop?category=mens-watches" className="text-slate-400 hover:text-rose-400 transition">
+                    Men's Watches
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=womens-watches" className="text-slate-400 hover:text-rose-400 transition">
+                    Women's Watches
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?category=luxury-watches" className="text-slate-400 hover:text-rose-400 transition">
+                    Luxury Automatic Series
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?sort=discount" className="text-slate-400 hover:text-rose-400 transition">
+                    Hot Sale Deals (50% Off)
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shop?sort=latest" className="text-slate-400 hover:text-rose-400 transition">
+                    New 2024 Arrivals
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 3: Customer Care */}
+            <div>
+              <h4 className="text-[15px] font-bold text-white mb-4 tracking-wide">
+                Customer Care
+              </h4>
+              <ul className="space-y-2.5 text-[13px]">
+                <li>
+                  <Link to="/order-tracking" className="text-slate-400 hover:text-rose-400 transition">
+                    Order Tracking
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/help-center" className="text-slate-400 hover:text-rose-400 transition">
+                    Delivery & Returns
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/help-center" className="text-slate-400 hover:text-rose-400 transition">
+                    Warranty Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" className="text-slate-400 hover:text-rose-400 transition">
+                    About OWS
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="text-slate-400 hover:text-rose-400 transition">
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 4: Newsletter */}
+            <div>
+              <h4 className="text-[15px] font-bold text-white mb-2 tracking-wide">
+                Join the VIP Club
+              </h4>
+              <p className="text-[12.5px] text-slate-400 mb-4">
+                Subscribe to unlock secret flash sales and get 10% off your first timepiece.
+              </p>
+
+              {subscribed ? (
+                <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-800 text-emerald-300 text-[12.5px] flex items-center gap-2">
+                  <IoCheckmarkCircle className="text-[18px] text-emerald-400 shrink-0" />
+                  <span>Use code <b>OLEVS10</b> at checkout!</span>
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className="space-y-2">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    className="w-full h-10 px-3.5 rounded-xl bg-slate-900 border border-slate-700 text-[13px] text-white placeholder-slate-500 focus:outline-none focus:border-rose-500"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full h-10 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-[13px] transition shadow-md shadow-rose-600/30"
+                  >
+                    Subscribe & Get 10% Off
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
       </footer>
-        {/*BottomStrip start here*/}
-      <div className="bottomstrip border-t border-[rgba(0,0,0,0.2)] py-3 bg-white">
-        <div className="container flex items-center justify-between ">
-            <ul className=" flex items-center gap-3">
-                <li className="list-none"><Link to="/" target="_blank" className="w-[35px] h-[35px] border border-[rgba(0,0,0,0.1)] rounded-full flex items-center justify-center group transition-all duration-300 hover:bg-primary">
-                <FaFacebookF className="text-[17px] group-hover:text-white"/>
-                </Link></li>
-                <li className="list-none"><Link to="/" target="_blank" className="w-[35px] h-[35px] border border-[rgba(0,0,0,0.1)] rounded-full flex items-center justify-center group transition-all duration-200 hover:bg-primary">
-                <CiYoutube className="text-[20px] group-hover:text-white"/>
-                </Link></li>
-                <li className="list-none"><Link to="/" target="_blank" className="w-[35px] h-[35px] border border-[rgba(0,0,0,0.1)] rounded-full flex items-center justify-center group transition-all duration-200 hover:bg-primary">
-                <FaInstagram className="text-[17px] group-hover:text-white"/>
-                </Link></li>
-                <li className="list-none"><Link to="/" target="_blank" className="w-[35px] h-[35px] border border-[rgba(0,0,0,0.1)] rounded-full flex items-center justify-center group transition-all duration-200 hover:bg-primary">
-                <FaTiktok className="text-[17px] group-hover:text-white"/>
-                </Link></li>
-            </ul>
-            <p className="text-[13px] text-center mb-0">© 2024 - Olevs Watch Shop</p>
-            <div className="flex items-center gap-1">
-                <img src={pm1} alt="image"/>
-                <img src={pm2} alt="image"/>
-                <img src={pm3} alt="image"/>
-                <img src={pm4} alt="image"/>
-                <img src={pm5} alt="image"/>
-            </div>
+
+      {/* Bottom Legal & Payment strip */}
+      <div className="bg-slate-900 text-slate-400 py-4 border-t border-slate-800/80 text-[12px]">
+        <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Social Links */}
+          <div className="flex items-center gap-2.5">
+            {[
+              { icon: <FaFacebookF />, href: "https://facebook.com", label: "Facebook" },
+              { icon: <FaInstagram />, href: "https://instagram.com", label: "Instagram" },
+              { icon: <FaYoutube />, href: "https://youtube.com", label: "YouTube" },
+              { icon: <FaTiktok />, href: "https://tiktok.com", label: "TikTok" },
+            ].map((s, idx) => (
+              <a
+                key={idx}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-rose-600 hover:text-white flex items-center justify-center transition text-slate-300 text-[13px]"
+                aria-label={s.label}
+              >
+                {s.icon}
+              </a>
+            ))}
+          </div>
+
+          <p>© 2024 OLEVS Watch Shop. All rights reserved. Crafted with precision.</p>
+
+          <div className="flex items-center gap-2 opacity-80">
+            <img src={pm1} alt="Carte Bleue" className="h-5 object-contain" />
+            <img src={pm2} alt="Visa" className="h-5 object-contain" />
+            <img src={pm3} alt="MasterCard" className="h-5 object-contain" />
+            <img src={pm4} alt="American Express" className="h-5 object-contain" />
+            <img src={pm5} alt="PayPal" className="h-5 object-contain" />
+          </div>
         </div>
       </div>
     </>

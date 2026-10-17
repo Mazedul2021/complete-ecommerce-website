@@ -24,23 +24,27 @@ const Countdown = () => {
 
   const Box = ({ value, label }) => (
     <div className="flex flex-col items-center">
-      <span className="w-[52px] h-[52px] bg-white rounded-lg shadow flex items-center justify-center text-[20px] font-[700] text-[#ff5252] tabular-nums">
-        {pad(value)}
-      </span>
-      <span className="text-[10px] uppercase tracking-wide text-[rgba(0,0,0,0.5)] mt-1.5 font-[500]">
+      <div className="relative w-[52px] h-[52px] sm:w-[58px] sm:h-[58px] bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-[0_8px_20px_rgba(0,0,0,0.3)] border border-slate-700/60 flex items-center justify-center overflow-hidden">
+        {/* Subtle top glare highlight */}
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+        <span className="text-[20px] sm:text-[24px] font-extrabold text-amber-400 tabular-nums font-mono tracking-tight drop-shadow">
+          {pad(value)}
+        </span>
+      </div>
+      <span className="text-[10px] uppercase tracking-widest text-slate-300 font-bold mt-1.5">
         {label}
       </span>
     </div>
   );
 
   return (
-    <div className="flex items-start gap-2.5">
+    <div className="flex items-center gap-2 sm:gap-3">
       <Box value={time.hours} label="Hours" />
-      <span className="text-[20px] font-[700] leading-[52px] text-[rgba(0,0,0,0.3)]">
+      <span className="text-[22px] font-extrabold text-amber-400/60 -mt-5 animate-pulse font-mono">
         :
       </span>
       <Box value={time.minutes} label="Mins" />
-      <span className="text-[20px] font-[700] leading-[52px] text-[rgba(0,0,0,0.3)]">
+      <span className="text-[22px] font-extrabold text-amber-400/60 -mt-5 animate-pulse font-mono">
         :
       </span>
       <Box value={time.seconds} label="Secs" />
