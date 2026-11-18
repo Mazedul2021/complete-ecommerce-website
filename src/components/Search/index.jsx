@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { IoSearchSharp, IoClose, IoTrendingUp, IoSparkles } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { searchProducts } from "../../data/products";
+import { useCatalog } from "../../data/useCatalog";
 import { formatPrice } from "../../utils/format";
 
 const TRENDING_TAGS = ["Automatic", "Skeleton", "NAVIFORCE", "Chronograph", "Gold", "Leather"];
 
 const Search = () => {
+  useCatalog();
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
   const inputRef = useRef(null);

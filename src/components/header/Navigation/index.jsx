@@ -2,7 +2,8 @@ import Button from "@mui/material/Button";
 import React from "react";
 import { Link } from "react-router-dom";
 import CategoryPanel from "./CategoryPanel";
-import { categories } from "../../../data/categories";
+import { useCategories } from "../../../data/useCategories";
+import { useSettings } from "../../../data/useSettings";
 import bannerImg from "../../../assets/Image/Banner/9.webp";
 import "./style.css";
 
@@ -22,7 +23,17 @@ const MegaCol = ({ title, to, links }) => (
 );
 
 const Navigation = () => {
+  const categories = useCategories();
+  const settings = useSettings();
   const featuredCats = categories.slice(0, 4);
+  const navLinks =
+    settings.navLinks?.length > 0
+      ? settings.navLinks
+      : [
+          { label: "About", link: "/about", badge: "" },
+          { label: "Contact", link: "/contact", badge: "" },
+          { label: "Hot Sale", link: "/shop?sort=discount", badge: "50%" },
+        ];
 
   return (
     <nav className="nav py-1.5 bg-white border-b border-[rgba(0,0,0,0.08)]">
@@ -58,7 +69,7 @@ const Navigation = () => {
                         className="flex items-center gap-2 !text-[13.5px] !font-[600] !text-black !pb-1 hover:!text-[#ff5252]"
                       >
                         <img
-                          src={cat.img}
+                          src={cat.image}
                           alt=""
                           className="w-[22px] h-[22px] object-contain"
                         />
@@ -120,32 +131,24 @@ const Navigation = () => {
               </li>
             ))}
 
-            <li className="list-none">
-              <Link to="/about">
-                <Button className="link transition !font-[500] !text-[rgba(0,0,0,0.8)] hover:!text-[#ff5252] !normal-case">
-                  <span className="navLabel text-[14px]">About</span>
-                </Button>
-              </Link>
-            </li>
-
-            <li className="list-none">
-              <Link to="/contact">
-                <Button className="link transition !font-[500] !text-[rgba(0,0,0,0.8)] hover:!text-[#ff5252] !normal-case">
-                  <span className="navLabel text-[14px]">Contact</span>
-                </Button>
-              </Link>
-            </li>
-
-            <li className="list-none">
-              <Link to="/shop?sort=discount">
-                <Button className="!font-[600] !text-[#ff5252] !normal-case relative">
-                  <span className="text-[14px]">Hot Sale</span>
-                  <span className="absolute -top-1 -right-4 bg-[#ff5252] text-white text-[9px] px-1.5 py-[1px] rounded-full">
-                    50%
-                  </span>
-                </Button>
-              </Link>
-            </li>
+            {navLinks.map((item, i) => (
+              <li key={i} className="list-none">
+                <Link to={item.link || "/"}>
+                  <Button
+                    className={`transition !font-[500] !text-[rgba(0,0,0,0.8)] hover:!text-[#ff5252] !normal-case ${
+                      item.badge ? "!font-[600] !text-[#ff5252] relative" : ""
+                    }`}
+                  >
+                    <span className="navLabel text-[14px]">{item.label}</span>
+                    {item.badge && (
+                      <span className="absolute -top-1 -right-4 bg-[#ff5252] text-white text-[9px] px-1.5 py-[1px] rounded-full">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Button>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

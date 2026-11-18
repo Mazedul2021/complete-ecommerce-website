@@ -4,10 +4,11 @@ import Collapse from "@mui/material/Collapse";
 import { Link, useNavigate } from "react-router-dom";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 import Button from "@mui/material/Button";
-import { categories } from "../../data/categories";
+import { useCategories } from "../../data/useCategories";
 import { useStore } from "../../context/StoreContext";
 
 const MobileNav = () => {
+  const categories = useCategories();
   const { mobileNavOpen, setMobileNavOpen } = useStore();
   const [openCat, setOpenCat] = useState(null);
   const [openSub, setOpenSub] = useState(null);
@@ -59,7 +60,7 @@ const MobileNav = () => {
                 className="w-full flex items-center gap-3 px-4 py-2.5 text-[14px] font-[500] text-[rgba(0,0,0,0.8)]"
               >
                 <img
-                  src={cat.img}
+                  src={cat.image}
                   alt=""
                   className="w-[24px] h-[24px] object-contain"
                 />

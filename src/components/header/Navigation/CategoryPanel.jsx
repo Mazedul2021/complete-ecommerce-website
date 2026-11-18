@@ -4,11 +4,14 @@ import { FaChevronRight } from "react-icons/fa";
 import { RiMenu2Fill } from "react-icons/ri";
 import { TfiAngleDown } from "react-icons/tfi";
 import { Link } from "react-router-dom";
-import { categories } from "../../../data/categories";
 import { products } from "../../../data/products";
+import { useCatalog } from "../../../data/useCatalog";
+import { useCategories } from "../../../data/useCategories";
 import "./style.css";
 
 const CategoryPanel = () => {
+  useCatalog();
+  const categories = useCategories();
   const [isOpen, setIsOpen] = useState(false);
   const panelRef = useRef(null);
 
@@ -57,7 +60,7 @@ const CategoryPanel = () => {
                   className="flex items-center gap-3 px-4 py-[10px] border-b border-[rgba(0,0,0,0.05)] hover:bg-[#fff5f5] transition-colors"
                 >
                   <img
-                    src={category.img}
+                    src={category.image}
                     alt={category.name}
                     className="w-[26px] h-[26px] object-contain"
                   />

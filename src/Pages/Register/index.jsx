@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useAuth } from "../../context/AuthContext";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -11,16 +13,34 @@ const Register = () => {
     password: "",
     confirm: "",
   });
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    setError("");
+
     if (form.password !== form.confirm) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match.");
       return;
     }
-    navigate("/login");
+
+    setBusy(true);
+    try {
+      await register({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        password: form.password,
+      });
+      navigate("/", { replace: true });
+    } catch (cause) {
+      setError(cause.message);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const inputCls =
@@ -40,6 +60,7 @@ const Register = () => {
           <form onSubmit={submit} className="space-y-4">
             <input
               required
+              autoComplete="name"
               placeholder="Full Name"
               value={form.name}
               onChange={set("name")}
@@ -48,6 +69,7 @@ const Register = () => {
             <input
               type="email"
               required
+              autoComplete="email"
               placeholder="Email Address"
               value={form.email}
               onChange={set("email")}
@@ -55,6 +77,7 @@ const Register = () => {
             />
             <input
               required
+              autoComplete="tel"
               placeholder="Phone Number"
               value={form.phone}
               onChange={set("phone")}
@@ -64,6 +87,8 @@ const Register = () => {
               <input
                 type="password"
                 required
+                minLength={8}
+                autoComplete="new-password"
                 placeholder="Password"
                 value={form.password}
                 onChange={set("password")}
@@ -72,19 +97,36 @@ const Register = () => {
               <input
                 type="password"
                 required
+                minLength={8}
+                autoComplete="new-password"
                 placeholder="Confirm"
                 value={form.confirm}
                 onChange={set("confirm")}
                 className={inputCls}
               />
             </div>
+
+            {error && (
+              <p
+                role="alert"
+                className="text-[12.5px] font-semibold text-[#e11d48] bg-rose-50 border border-rose-200 rounded-md px-3 py-2"
+              >
+                {error}
+              </p>
+            )}
+
             <Button
               type="submit"
+              disabled={busy}
               className="btn-org w-full !normal-case !py-3"
             >
-              Create Account
+              {busy ? "Creating account…" : "Create Account"}
             </Button>
           </form>
+
+          <p className="text-[11.5px] text-center text-[rgba(0,0,0,0.45)] mt-3">
+            New accounts are customer accounts. Admin access is granted separately.
+          </p>
 
           <p className="text-center text-[13.5px] text-[rgba(0,0,0,0.55)] mt-6">
             Already have an account?{" "}

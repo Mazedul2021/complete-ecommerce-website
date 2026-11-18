@@ -4,6 +4,9 @@ import { TbTruckDelivery, TbShieldCheck, TbHeadset, TbRotateClockwise2 } from "r
 import { IoGiftOutline, IoCheckmarkCircle } from "react-icons/io5";
 import { FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 import { useStore } from "../../context/StoreContext";
+import { api } from "../../api/client";
+import { useSettings } from "../../data/useSettings";
+import { FOOTER_DEFAULTS } from "../../data/footerDefaults";
 
 import pm1 from "../../assets/Image/bottomstrip/carte_bleue.png";
 import pm2 from "../../assets/Image/bottomstrip/visa.png";
@@ -11,12 +14,21 @@ import pm3 from "../../assets/Image/bottomstrip/master_card.png";
 import pm4 from "../../assets/Image/bottomstrip/american_express.png";
 import pm5 from "../../assets/Image/bottomstrip/paypal.png";
 
+const BADGE_ICONS = [
+  { icon: <TbTruckDelivery className="text-[26px] text-rose-500" />, ring: "group-hover:border-rose-500/40" },
+  { icon: <TbRotateClockwise2 className="text-[26px] text-amber-500" />, ring: "group-hover:border-amber-500/40" },
+  { icon: <TbShieldCheck className="text-[26px] text-emerald-500" />, ring: "group-hover:border-emerald-500/40" },
+  { icon: <TbHeadset className="text-[26px] text-blue-500" />, ring: "group-hover:border-blue-500/40" },
+];
+
 const Footer = () => {
+  const settings = useSettings();
+  const footer = { ...FOOTER_DEFAULTS, ...(settings.footer || {}) };
   const { showToast } = useStore();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email || !email.includes("@")) {
       showToast({
@@ -26,12 +38,21 @@ const Footer = () => {
       });
       return;
     }
-    setSubscribed(true);
-    showToast({
-      type: "success",
-      title: "Welcome to the VIP Club! 🎉",
-      message: "Check your inbox for your 10% coupon: OLEVS10",
-    });
+    try {
+      await api.newsletter.subscribe(email);
+      setSubscribed(true);
+      showToast({
+        type: "success",
+        title: "Welcome to the VIP Club! 🎉",
+        message: "You're subscribed — watch your inbox for VIP offers.",
+      });
+    } catch (cause) {
+      showToast({
+        type: "info",
+        title: "Subscription Failed",
+        message: cause.message,
+      });
+    }
   };
 
   return (
@@ -40,45 +61,20 @@ const Footer = () => {
         <div className="container">
           {/* Top Value Badges */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-12 border-b border-slate-800/80">
-            <div className="flex items-center gap-3.5 group">
-              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-rose-500 group-hover:scale-110 group-hover:border-rose-500/40 transition-all">
-                <TbTruckDelivery className="text-[26px]" />
-              </div>
-              <div>
-                <h4 className="text-[14px] font-bold text-white">Fastest Delivery</h4>
-                <p className="text-[12px] text-slate-400">All across Bangladesh</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3.5 group">
-              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-amber-500 group-hover:scale-110 group-hover:border-amber-500/40 transition-all">
-                <TbRotateClockwise2 className="text-[26px]" />
-              </div>
-              <div>
-                <h4 className="text-[14px] font-bold text-white">7-Day Easy Return</h4>
-                <p className="text-[12px] text-slate-400">Hassle-free exchange</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3.5 group">
-              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-500 group-hover:scale-110 group-hover:border-emerald-500/40 transition-all">
-                <TbShieldCheck className="text-[26px]" />
-              </div>
-              <div>
-                <h4 className="text-[14px] font-bold text-white">Official Warranty</h4>
-                <p className="text-[12px] text-slate-400">100% genuine products</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3.5 group">
-              <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-500 group-hover:scale-110 group-hover:border-blue-500/40 transition-all">
-                <TbHeadset className="text-[26px]" />
-              </div>
-              <div>
-                <h4 className="text-[14px] font-bold text-white">24/7 Dedicated Support</h4>
-                <p className="text-[12px] text-slate-400">Instant response team</p>
-              </div>
-            </div>
+            {(footer.badges ?? []).slice(0, 4).map((badge, i) => {
+              const meta = BADGE_ICONS[i % BADGE_ICONS.length];
+              return (
+                <div key={i} className="flex items-center gap-3.5 group">
+                  <div className={`w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:scale-110 ${meta.ring} transition-all`}>
+                    {meta.icon}
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] font-bold text-white">{badge.title}</h4>
+                    <p className="text-[12px] text-slate-400">{badge.text}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Main Footer Links */}
@@ -87,113 +83,63 @@ const Footer = () => {
             <div className="lg:col-span-2 space-y-4">
               <Link to="/">
                 <img
-                  src="/logo.webp"
+                  src={settings.logo || "/logo.webp"}
                   alt="OLEVS Watch Shop"
                   className="w-[140px] h-auto brightness-200 contrast-125 mb-3"
                 />
               </Link>
               <p className="text-[13px] text-slate-400 max-w-sm leading-relaxed">
-                Your premier destination for authentic luxury skeleton timepieces, automatic movements, and contemporary chronographs in Bangladesh.
+                {footer.about}
               </p>
 
               <div className="pt-2 text-[13px] text-slate-300 space-y-1">
-                <p>Sha-38/1, Middle Badda, Gulshan Link Road, Dhaka-1212</p>
+                <p>{settings.address}</p>
                 <p>
                   Hotline:{" "}
                   <a
-                    href="tel:+8801799018864"
+                    href={`tel:${String(settings.supportPhone ?? "").replace(/[^+\d]/g, "")}`}
                     className="font-bold text-rose-400 hover:text-rose-300 transition"
                   >
-                    (+880) 1799018864
+                    {settings.supportPhone}
                   </a>
                 </p>
                 <p>
                   Email:{" "}
                   <a
-                    href="mailto:contact@olevswatchshop.com"
+                    href={`mailto:${settings.supportEmail}`}
                     className="text-slate-400 hover:text-white transition"
                   >
-                    contact@olevswatchshop.com
+                    {settings.supportEmail}
                   </a>
                 </p>
               </div>
             </div>
 
-            {/* Col 2: Collections */}
-            <div>
-              <h4 className="text-[15px] font-bold text-white mb-4 tracking-wide">
-                Collections
-              </h4>
-              <ul className="space-y-2.5 text-[13px]">
-                <li>
-                  <Link to="/shop?category=mens-watches" className="text-slate-400 hover:text-rose-400 transition">
-                    Men's Watches
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=womens-watches" className="text-slate-400 hover:text-rose-400 transition">
-                    Women's Watches
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?category=luxury-watches" className="text-slate-400 hover:text-rose-400 transition">
-                    Luxury Automatic Series
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?sort=discount" className="text-slate-400 hover:text-rose-400 transition">
-                    Hot Sale Deals (50% Off)
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shop?sort=latest" className="text-slate-400 hover:text-rose-400 transition">
-                    New 2024 Arrivals
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 3: Customer Care */}
-            <div>
-              <h4 className="text-[15px] font-bold text-white mb-4 tracking-wide">
-                Customer Care
-              </h4>
-              <ul className="space-y-2.5 text-[13px]">
-                <li>
-                  <Link to="/order-tracking" className="text-slate-400 hover:text-rose-400 transition">
-                    Order Tracking
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/help-center" className="text-slate-400 hover:text-rose-400 transition">
-                    Delivery & Returns
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/help-center" className="text-slate-400 hover:text-rose-400 transition">
-                    Warranty Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="text-slate-400 hover:text-rose-400 transition">
-                    About OWS
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contact" className="text-slate-400 hover:text-rose-400 transition">
-                    Contact Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {/* Link columns */}
+            {(footer.columns ?? []).map((col, ci) => (
+              <div key={ci}>
+                <h4 className="text-[15px] font-bold text-white mb-4 tracking-wide">
+                  {col.title}
+                </h4>
+                <ul className="space-y-2.5 text-[13px]">
+                  {(col.links ?? []).map((link, li) => (
+                    <li key={li}>
+                      <Link to={link.link || "/"} className="text-slate-400 hover:text-rose-400 transition">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
             {/* Col 4: Newsletter */}
             <div>
               <h4 className="text-[15px] font-bold text-white mb-2 tracking-wide">
-                Join the VIP Club
+                {footer.newsletter?.title}
               </h4>
               <p className="text-[12.5px] text-slate-400 mb-4">
-                Subscribe to unlock secret flash sales and get 10% off your first timepiece.
+                {footer.newsletter?.text}
               </p>
 
               {subscribed ? (
@@ -214,7 +160,7 @@ const Footer = () => {
                     type="submit"
                     className="w-full h-10 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-[13px] transition shadow-md shadow-rose-600/30"
                   >
-                    Subscribe & Get 10% Off
+                    {footer.newsletter?.button}
                   </button>
                 </form>
               )}
@@ -229,10 +175,10 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex items-center gap-2.5">
             {[
-              { icon: <FaFacebookF />, href: "https://facebook.com", label: "Facebook" },
-              { icon: <FaInstagram />, href: "https://instagram.com", label: "Instagram" },
-              { icon: <FaYoutube />, href: "https://youtube.com", label: "YouTube" },
-              { icon: <FaTiktok />, href: "https://tiktok.com", label: "TikTok" },
+              { icon: <FaFacebookF />, href: footer.socials?.facebook || "https://facebook.com", label: "Facebook" },
+              { icon: <FaInstagram />, href: footer.socials?.instagram || "https://instagram.com", label: "Instagram" },
+              { icon: <FaYoutube />, href: footer.socials?.youtube || "https://youtube.com", label: "YouTube" },
+              { icon: <FaTiktok />, href: footer.socials?.tiktok || "https://tiktok.com", label: "TikTok" },
             ].map((s, idx) => (
               <a
                 key={idx}
@@ -247,7 +193,15 @@ const Footer = () => {
             ))}
           </div>
 
-          <p>© 2024 OLEVS Watch Shop. All rights reserved. Crafted with precision.</p>
+          <p className="flex items-center gap-2">
+            {footer.copyright}
+            <Link
+              to="/admin"
+              className="text-slate-500 hover:text-rose-400 transition border-l border-slate-700 pl-2"
+            >
+              Admin
+            </Link>
+          </p>
 
           <div className="flex items-center gap-2 opacity-80">
             <img src={pm1} alt="Carte Bleue" className="h-5 object-contain" />

@@ -28,10 +28,14 @@ const CartDrawer = () => {
   const [couponCode, setCouponCode] = useState("");
   const [couponMsg, setCouponMsg] = useState("");
 
-  const handleApplyCoupon = (e) => {
+  const [couponBusy, setCouponBusy] = useState(false);
+
+  const handleApplyCoupon = async (e) => {
     e.preventDefault();
-    if (!couponCode.trim()) return;
-    const res = applyCoupon(couponCode);
+    if (!couponCode.trim() || couponBusy) return;
+    setCouponBusy(true);
+    const res = await applyCoupon(couponCode);
+    setCouponBusy(false);
     if (!res.success) {
       setCouponMsg(res.message);
     } else {

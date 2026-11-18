@@ -12,15 +12,21 @@ import slide3 from "../../assets/Image/HomeSlider/3.png";
 import slide4 from "../../assets/Image/HomeSlider/4.png";
 
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import { useSettings } from "../../data/useSettings";
 
-const slides = [
-  { img: slide1, link: "/shop?category=mens-watches", tag: "NEW ARRIVAL", title: "Automatic Mechanical Series" },
-  { img: slide2, link: "/shop?category=luxury-watches", tag: "EXCLUSIVE", title: "Luxury Skeleton Timepieces" },
-  { img: slide3, link: "/shop?sort=discount", tag: "HOT SALE", title: "Limited Time Offers up to 50% Off" },
-  { img: slide4, link: "/shop?category=womens-watches", tag: "ELEGANCE", title: "Contemporary Women's Watches" },
+const defaultSlides = [
+  { img: slide1, link: "/shop?category=mens-watches" },
+  { img: slide2, link: "/shop?category=luxury-watches" },
+  { img: slide3, link: "/shop?sort=discount" },
+  { img: slide4, link: "/shop?category=womens-watches" },
 ];
 
 const HomeSlider = () => {
+  const settings = useSettings();
+  const custom = (settings.heroSlides ?? []).filter((s) => s?.image);
+  const slides = custom.length
+    ? custom.map((s) => ({ img: s.image, link: s.link || "/shop" }))
+    : defaultSlides;
   return (
     <div className="homeSlider pt-3 pb-6">
       <div className="container">
@@ -45,7 +51,7 @@ const HomeSlider = () => {
                 <Link to={slide.link} className="block relative group overflow-hidden">
                   <img
                     src={slide.img}
-                    alt={slide.title}
+                    alt="Promotional banner"
                     className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-102"
                   />
                   {/* Subtle dark bottom vignette */}

@@ -5,17 +5,18 @@ import ProductsSlider from "../../components/ProductsSlider/ProductsSlider";
 import HomeCatSlider from "../../components/CatSlider/HomeCatSlider";
 import AdsBannerSlider from "../../components/AdsBannerSlider/AdsBannerSlider";
 import Countdown from "../../components/Countdown/Countdown";
-import Testimonials from "../../components/Testimonials/Testimonials";
 import ProductItem from "../../components/ProductItem/ProductItem";
 
-import { categories } from "../../data/categories";
+import { useCategories } from "../../data/useCategories";
+import { useSettings } from "../../data/useSettings";
 import {
-  popularProducts,
-  latestProducts,
-  featuredProducts,
-  dealProducts,
+  getPopularProducts,
+  getLatestProducts,
+  getFeaturedProducts,
+  getDealProducts,
   products,
 } from "../../data/products";
+import { useCatalog } from "../../data/useCatalog";
 
 import banner1 from "../../assets/Image/Banner/7.png";
 import banner2 from "../../assets/Image/Banner/8.png";
@@ -86,13 +87,34 @@ const WATCH_STYLES = [
 ];
 
 const Home = () => {
+  useCatalog();
+  const categories = useCategories();
+  const settings = useSettings();
   const [activeTab, setActiveTab] = useState(0);
 
   const tabCategories = categories.slice(0, 6);
+
+  // Admin-picked products win; otherwise fall back to automatic rules.
+  const picked = (key, fallback) => {
+    const ids = (settings.homePicks?.[key] ?? []).map(String);
+    if (!ids.length) return fallback;
+    return products.filter((p) => ids.includes(String(p.id)));
+  };
+  const popularProducts = picked("popular", getPopularProducts());
+  const latestProducts = picked("latest", getLatestProducts());
+  const featuredProducts = picked("featured", getFeaturedProducts());
+
   const tabProducts =
     activeTab === 0
       ? popularProducts
       : products.filter((p) => p.category === tabCategories[activeTab - 1].slug);
+
+  const promo = settings.promoBanners ?? [];
+  const banner1src = promo[0]?.image || banner1;
+  const banner1link = promo[0]?.link || "/shop?category=luxury-watches";
+  const banner2src = promo[1]?.image || banner2;
+  const banner2link = promo[1]?.link || "/shop?category=smart-watches";
+  const flashTitle = settings.flashDeals?.title || "Deals of the Day";
 
   return (
     <>
@@ -147,6 +169,7 @@ const Home = () => {
       </section>
 
       {/* ===== Flash Deals of the Day (Luxury Midnight Black & Crimson Edition) ===== */}
+      {settings.flashDeals?.enabled !== false && (
       <section className="py-10 my-4 bg-gradient-to-br from-slate-950 via-[#1a0f1d] to-slate-950 text-white relative overflow-hidden">
         {/* Decorative glowing gradient orbs */}
         <div className="absolute top-0 right-10 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none" />
@@ -159,7 +182,7 @@ const Home = () => {
                 <IoFlame className="text-amber-400 text-[14px]" /> Flash Deal • Ends Midnight
               </div>
               <h2 className="text-[26px] lg:text-[32px] font-extrabold text-white tracking-tight">
-                Deals of the Day
+                {flashTitle}
               </h2>
               <p className="text-[14px] text-slate-300 mt-1 max-w-lg">
                 Exclusive limited-quantity discounts on flagship skeleton and chronograph timepieces.
@@ -187,10 +210,11 @@ const Home = () => {
 
           {/* Deals Slider */}
           <div className="bg-white/95 backdrop-blur-xl p-4 sm:p-6 rounded-3xl shadow-2xl border border-white/20">
-            <ProductsSlider products={dealProducts} items={5} />
+            <ProductsSlider products={getDealProducts()} items={5} />
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== Curated Watch Styles (Interactive Quick Pick) ===== */}
       <section className="py-8">
@@ -239,11 +263,11 @@ const Home = () => {
       <section className="py-4">
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-5">
           <Link
-            to="/shop?category=luxury-watches"
+            to={banner1link}
             className="group block overflow-hidden rounded-3xl shadow-[0_8px_30px_rgba(15,23,42,0.08)] border border-slate-200/80 relative"
           >
             <img
-              src={banner1}
+              src={banner1src}
               alt="Luxury watches offer"
               className="w-full h-[250px] object-cover group-hover:scale-105 transition-all duration-700 ease-out"
             />
@@ -255,11 +279,11 @@ const Home = () => {
           </Link>
 
           <Link
-            to="/shop?category=smart-watches"
+            to={banner2link}
             className="group block overflow-hidden rounded-3xl shadow-[0_8px_30px_rgba(15,23,42,0.08)] border border-slate-200/80 relative"
           >
             <img
-              src={banner2}
+              src={banner2src}
               alt="Smart watches offer"
               className="w-full h-[250px] object-cover group-hover:scale-105 transition-all duration-700 ease-out"
             />
@@ -371,9 +395,6 @@ const Home = () => {
           <ProductsSlider products={featuredProducts} items={6} />
         </div>
       </section>
-
-      {/* ===== Verified Customer Testimonials ===== */}
-      <Testimonials />
     </>
   );
 };

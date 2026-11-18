@@ -1,11 +1,13 @@
-import img1 from "../assets/Image/product/1.webp";
-import img2 from "../assets/Image/product/2.webp";
-import img3 from "../assets/Image/product/3.webp";
-import img4 from "../assets/Image/product/4.webp";
-import img5 from "../assets/Image/product/5.jpg";
-import img6 from "../assets/Image/product/6.webp";
-
-export const productImages = [img1, img2, img3, img4, img5, img6];
+// Product photos live in /public/products so the same stable paths can be
+// stored in the catalog database and served to every client.
+export const productImages = [
+  "/products/1.webp",
+  "/products/2.webp",
+  "/products/3.webp",
+  "/products/4.webp",
+  "/products/5.jpg",
+  "/products/6.webp",
+];
 
 // [main image, hover/gallery image, gallery image]
 const img = (a, b, c) => [productImages[a], productImages[b], productImages[c]];
@@ -570,23 +572,330 @@ export const products = [
     description:
       "Live GPS location, safe-zone alerts, two-way calling and an SOS button — peace of mind for parents, fun for kids.",
   }),
+  product({
+    name: "NAVIFORCE Pilot Chronograph Leather Watch",
+    brand: "NAVIFORCE",
+    category: "mens-watches",
+    subCategory: "Pilot",
+    price: 2450,
+    oldPrice: 2990,
+    rating: 4.6,
+    reviews: 92,
+    stock: 18,
+    sku: "NVF-PIL-4412",
+    images: img(1, 4, 0),
+    colors: ["Brown", "Black"],
+    strap: "Genuine Leather",
+    movement: "Quartz",
+    waterResist: "3ATM",
+    popular: true,
+    tags: ["pilot", "chronograph", "leather"],
+    description:
+      "Aviation-inspired dial with triple chronograph sub-dials and a cushion leather strap. NAVIFORCE PIL-4412 flies in style.",
+  }),
+  product({
+    name: "OLEVS Mesh Bracelet Dress Watch 7740",
+    brand: "OLEVS",
+    category: "womens-watches",
+    subCategory: "Mesh Strap",
+    price: 1690,
+    oldPrice: 2150,
+    rating: 4.5,
+    reviews: 118,
+    stock: 27,
+    sku: "OLV-7740-MSH",
+    images: img(3, 1, 5),
+    colors: ["Silver", "Rose Gold"],
+    strap: "Mesh Strap",
+    movement: "Quartz",
+    waterResist: "3ATM",
+    latest: true,
+    tags: ["mesh", "dress", "women"],
+    description:
+      "Feather-light Milanese mesh with a fine sunray dial. The OLEVS 7740 is an elegant everyday piece that goes from desk to dinner.",
+  }),
+  product({
+    name: "LIGE Rose Gold Couple Set 9902",
+    brand: "LIGE",
+    category: "couple-watches",
+    subCategory: "His & Hers",
+    price: 3950,
+    oldPrice: 4800,
+    rating: 4.7,
+    reviews: 49,
+    stock: 12,
+    sku: "LGE-9902-CP",
+    images: img(4, 3, 0),
+    colors: ["Rose Gold", "Silver"],
+    strap: "Stainless Steel",
+    movement: "Quartz",
+    waterResist: "3ATM",
+    featured: true,
+    tags: ["couple", "rose gold", "gift"],
+    description:
+      "A perfectly matched his & hers pair in rose gold tone. Ships in a premium gift box — ready for anniversaries and proposals.",
+  }),
+  product({
+    name: "LIGE AMOLED Smart Watch BW0199",
+    brand: "LIGE",
+    category: "smart-watches",
+    subCategory: "AMOLED Display",
+    price: 2790,
+    oldPrice: 3490,
+    rating: 4.4,
+    reviews: 143,
+    stock: 22,
+    sku: "LGE-BW0199",
+    images: img(3, 5, 1),
+    colors: ["Black", "Gold"],
+    strap: "Silicone",
+    movement: "Smart",
+    waterResist: "IP68",
+    popular: true,
+    latest: true,
+    tags: ["smart", "amoled", "bluetooth"],
+    description:
+      "Vivid AMOLED always-on display with Bluetooth calling, heart-rate monitoring and 100+ sport modes. IP68 rated.",
+  }),
+  product({
+    name: "OLEVS GMT Dual Timezone Automatic 5510",
+    brand: "OLEVS",
+    category: "luxury-watches",
+    subCategory: "GMT",
+    price: 8250,
+    oldPrice: 9900,
+    rating: 4.9,
+    reviews: 36,
+    stock: 5,
+    sku: "OLV-5510-GMT",
+    images: img(0, 4, 1),
+    colors: ["Black", "Silver"],
+    strap: "Stainless Steel",
+    movement: "Automatic",
+    waterResist: "5ATM",
+    featured: true,
+    tags: ["gmt", "automatic", "travel"],
+    description:
+      "Track two time zones at a glance with the rotating GMT bezel and arrow hand. The OLEVS 5510 is built for frequent flyers.",
+  }),
+  product({
+    name: "SKMEI Retro Calculator Digital 1540",
+    brand: "SKMEI",
+    category: "digital-watches",
+    subCategory: "Calculator",
+    price: 990,
+    oldPrice: 1250,
+    rating: 4.2,
+    reviews: 156,
+    stock: 38,
+    sku: "SKM-1540-CAL",
+    images: img(5, 2, 4),
+    colors: ["Silver", "Black"],
+    strap: "Stainless Steel",
+    movement: "Digital",
+    waterResist: "3ATM",
+    tags: ["retro", "calculator", "digital"],
+    description:
+      "A love letter to the 80s — brushed steel case, red LED digits and a working calculator. Nostalgia never looked this sharp.",
+  }),
+  product({
+    name: "CURREN Cartoon Kids Watch 9088",
+    brand: "CURREN",
+    category: "kids-watches",
+    subCategory: "Cartoon Dial",
+    price: 720,
+    oldPrice: 980,
+    rating: 4.3,
+    reviews: 204,
+    stock: 45,
+    sku: "CRN-9088-KID",
+    images: img(2, 5, 3),
+    colors: ["Yellow", "Blue", "Pink"],
+    strap: "Silicone",
+    movement: "Quartz",
+    waterResist: "3ATM",
+    latest: true,
+    tags: ["kids", "cartoon", "colorful"],
+    description:
+      "Bright cartoon characters, glow-in-the-dark hands and a strap kids never want to take off. The perfect first watch.",
+  }),
+  product({
+    name: "OLEVS Quick-Release Silicone Strap 20mm",
+    brand: "OLEVS",
+    category: "accessories",
+    subCategory: "Silicone",
+    price: 380,
+    oldPrice: 520,
+    rating: 4.4,
+    reviews: 61,
+    stock: 80,
+    sku: "OLV-STR-20-SIL",
+    images: img(5, 0, 2),
+    colors: ["Black", "Blue", "Orange"],
+    strap: "Silicone",
+    movement: "—",
+    waterResist: "—",
+    tags: ["strap", "silicone", "20mm"],
+    description:
+      "Soft-touch silicone with a signed buckle and tool-free quick-release pins. Fits most 20mm watches.",
+  }),
+  product({
+    name: "NAVIFORCE Diver Bezel Steel Watch 9300",
+    brand: "NAVIFORCE",
+    category: "mens-watches",
+    subCategory: "Diver",
+    price: 2650,
+    oldPrice: 3200,
+    rating: 4.5,
+    reviews: 78,
+    stock: 16,
+    sku: "NVF-9300-DIV",
+    images: img(1, 0, 4),
+    colors: ["Blue", "Black"],
+    strap: "Stainless Steel",
+    movement: "Automatic",
+    waterResist: "5ATM",
+    popular: true,
+    latest: true,
+    tags: ["diver", "automatic", "5atm"],
+    description:
+      "A true automatic diver-style watch with unidirectional bezel, luminous markers and 5ATM water resistance.",
+  }),
+  product({
+    name: "LIGE Mother of Pearl Dress Watch 8810",
+    brand: "LIGE",
+    category: "womens-watches",
+    subCategory: "Mother of Pearl",
+    price: 2150,
+    oldPrice: 2700,
+    rating: 4.6,
+    reviews: 83,
+    stock: 14,
+    sku: "LGE-8810-MOP",
+    images: img(4, 2, 0),
+    colors: ["White", "Rose Gold"],
+    strap: "Genuine Leather",
+    movement: "Quartz",
+    waterResist: "3ATM",
+    featured: true,
+    tags: ["mother of pearl", "dress", "women"],
+    description:
+      "A shimmering mother-of-pearl dial framed in rose gold-tone indices. Effortless elegance for formal evenings.",
+  }),
+  product({
+    name: "OLEVS Moon Phase Automatic 6100",
+    brand: "OLEVS",
+    category: "luxury-watches",
+    subCategory: "Moon Phase",
+    price: 7450,
+    oldPrice: 8900,
+    rating: 4.8,
+    reviews: 29,
+    stock: 6,
+    sku: "OLV-6100-MP",
+    images: img(0, 1, 4),
+    colors: ["Silver", "Blue"],
+    strap: "Stainless Steel",
+    movement: "Automatic",
+    waterResist: "3ATM",
+    featured: true,
+    tags: ["moon phase", "automatic", "luxury"],
+    description:
+      "A romantic moon-phase complication with a deep blue aventurine sub-dial. One of our most requested complications.",
+  }),
+  product({
+    name: "SKMEI Dual Time Sport Digital 1790",
+    brand: "SKMEI",
+    category: "digital-watches",
+    subCategory: "Dual Time",
+    price: 1150,
+    oldPrice: 1450,
+    rating: 4.3,
+    reviews: 112,
+    stock: 30,
+    sku: "SKM-1790-DT",
+    images: img(5, 1, 3),
+    colors: ["Black", "Green"],
+    strap: "Silicone",
+    movement: "Digital",
+    waterResist: "5ATM",
+    latest: true,
+    tags: ["dual time", "sport", "digital"],
+    description:
+      "Track home and local time simultaneously with alarms, stopwatch and 5ATM swim-proof build.",
+  }),
 ];
+
+/* ------------------------------------------------------------------ */
+/* Shared catalog                                                      */
+/* ------------------------------------------------------------------ */
+// `products` is the in-memory catalog every storefront component reads. It
+// starts with the bundled seed for instant first paint, then the API copy
+// replaces it in place once GET /api/products responds.
+const listeners = new Set();
+let catalogVersion = 0;
+
+export const getCatalogVersion = () => catalogVersion;
+
+export const subscribeCatalog = (listener) => {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+};
+
+const commit = (next) => {
+  products.splice(0, products.length, ...next);
+  catalogVersion += 1;
+  listeners.forEach((listener) => listener());
+};
+
+// Replaces the shared array in place so every importer sees the new catalog.
+export const replaceProducts = (next) => commit(next);
+
+let pendingLoad = null;
+
+// Fetches the catalog from the backend once per page load. On failure the
+// bundled seed stays in place, so the storefront still renders offline.
+export const loadCatalog = () => {
+  if (!pendingLoad) {
+    pendingLoad = fetch("/api/products")
+      .then((response) => {
+        if (!response.ok) throw new Error(`API responded ${response.status}`);
+        return response.json();
+      })
+      .then((list) => {
+        if (Array.isArray(list) && list.length > 0) commit(list);
+        return products;
+      })
+      .catch((error) => {
+        console.warn(
+          "[catalog] API unavailable, using bundled catalog:",
+          error.message
+        );
+        return products;
+      });
+  }
+  return pendingLoad;
+};
 
 export const getProductById = (id) => products.find((p) => p.id === Number(id));
 
 export const getProductsByCategory = (slug) =>
   slug ? products.filter((p) => p.category === slug) : products;
 
-export const popularProducts = products.filter((p) => p.popular);
-export const latestProducts = products.filter((p) => p.latest);
-export const featuredProducts = products.filter((p) => p.featured);
-export const dealProducts = [...products]
-  .filter((p) => p.oldPrice > p.price)
-  .sort(
-    (a, b) =>
-      (b.oldPrice - b.price) / b.oldPrice - (a.oldPrice - a.price) / a.oldPrice
-  )
-  .slice(0, 8);
+// These are functions, not constants, because the catalog is replaced in
+// place after the API responds.
+export const getPopularProducts = () => products.filter((p) => p.popular);
+export const getLatestProducts = () => products.filter((p) => p.latest);
+export const getFeaturedProducts = () => products.filter((p) => p.featured);
+export const getDealProducts = () =>
+  [...products]
+    .filter((p) => p.oldPrice > p.price)
+    .sort(
+      (a, b) =>
+        (b.oldPrice - b.price) / b.oldPrice -
+        (a.oldPrice - a.price) / a.oldPrice
+    )
+    .slice(0, 8);
 
 export const searchProducts = (query) => {
   const q = query.trim().toLowerCase();

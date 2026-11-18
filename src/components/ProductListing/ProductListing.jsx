@@ -10,8 +10,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 import { useSearchParams } from "react-router-dom";
-import { products } from "../../data/products";
+import { useCatalog } from "../../data/useCatalog";
 import { getCategoryBySlug, getCategoryName } from "../../data/categories";
+import { useCategories } from "../../data/useCategories";
 import { IoCloseCircle, IoSwapVertical } from "react-icons/io5";
 
 const PER_PAGE = 8;
@@ -26,8 +27,12 @@ const SORTS = [
 ];
 
 const ProductListing = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const catalog = useCatalog();
+  useCategories();
+  const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
+  const subParam = searchParams.get("sub");
+  const subsubParam = searchParams.get("subsub");
   const brandParam = searchParams.get("brand");
   const qParam = searchParams.get("q") ?? "";
   const sortParam = searchParams.get("sort") ?? "latest";
@@ -35,9 +40,9 @@ const ProductListing = () => {
   const itemViewInit = searchParams.get("view") === "list" ? "list" : "grid";
 
   const priceBounds = useMemo(() => {
-    const prices = products.map((p) => p.price);
+    const prices = catalog.map((p) => p.price);
     return [Math.floor(Math.min(...prices) / 100) * 100, Math.ceil(Math.max(...prices) / 100) * 100];
-  }, []);
+  }, [catalog]);
 
   const [itemView, setItemView] = useState(itemViewInit);
   const [page, setPage] = useState(1);
@@ -55,12 +60,19 @@ const ProductListing = () => {
   const activeCategory = categoryParam ? getCategoryBySlug(categoryParam) : null;
 
   const filtered = useMemo(() => {
-    let list = [...products];
+    let list = [...catalog];
 
     if (categoryParam) {
       list = list.filter((p) => p.category === categoryParam);
     } else if (filters.categories.length > 0) {
       list = list.filter((p) => filters.categories.includes(p.category));
+    }
+
+    if (subParam) {
+      list = list.filter((p) => p.subCategory === subParam);
+    }
+    if (subsubParam) {
+      list = list.filter((p) => p.subSubCategory === subsubParam);
     }
 
     if (brandParam) {
@@ -110,7 +122,7 @@ const ProductListing = () => {
         list.sort((a, b) => b.id - a.id);
     }
     return list;
-  }, [categoryParam, brandParam, qParam, filters, sortKey]);
+  }, [categoryParam, subParam, subsubParam, brandParam, qParam, filters, sortKey, catalog]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const currentPage = Math.min(page, totalPages);

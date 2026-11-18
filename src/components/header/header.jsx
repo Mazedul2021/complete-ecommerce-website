@@ -11,8 +11,10 @@ import { IoShieldCheckmarkOutline, IoSparkles, IoFlame } from "react-icons/io5";
 import Tooltip from "@mui/material/Tooltip";
 import Navigation from "./Navigation";
 import { useStore } from "../../context/StoreContext";
+import { useAuth } from "../../context/AuthContext";
+import { useSettings } from "../../data/useSettings";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(() => ({
   "& .MuiBadge-badge": {
     right: -3,
     top: 10,
@@ -32,7 +34,9 @@ const ANNOUNCEMENTS = [
 ];
 
 const Header = () => {
+  const settings = useSettings();
   const { cartCount, wishlist, setCartDrawerOpen, setMobileNavOpen } = useStore();
+  const { user, logout } = useAuth();
   const [isSticky, setIsSticky] = useState(false);
   const [announcementIdx, setAnnouncementIdx] = useState(0);
 
@@ -101,7 +105,7 @@ const Header = () => {
             <Link to="/" className="group flex items-center gap-2">
               <img
                 className="w-[125px] sm:w-[145px] h-auto transition-transform duration-300 group-hover:scale-105"
-                src="/logo.webp"
+                src={settings.logo || "/logo.webp"}
                 alt="OLEVS Watch Shop"
               />
             </Link>
@@ -115,19 +119,50 @@ const Header = () => {
           {/* User Nav & Cart / Wishlist Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden lg:flex items-center gap-2 text-[13.5px] font-semibold text-slate-700 pr-2">
-              <Link
-                to="/login"
-                className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
-              >
-                Sign In
-              </Link>
-              <span className="text-slate-300">/</span>
-              <Link
-                to="/register"
-                className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
-              >
-                Register
-              </Link>
+              {user ? (
+                <>
+                  <span className="max-w-[140px] truncate text-slate-500">
+                    {user.name.split(" ")[0]}
+                  </span>
+                  <Link
+                    to="/account"
+                    className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
+                  >
+                    Account
+                  </Link>
+                  {user.role === "admin" && (
+                    <Link
+                      to="/admin"
+                      className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
+                    >
+                      Admin
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => logout()}
+                    className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
+                  >
+                    Sign In
+                  </Link>
+                  <span className="text-slate-300">/</span>
+                  <Link
+                    to="/register"
+                    className="hover:text-rose-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-50"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Wishlist Icon */}

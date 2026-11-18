@@ -11,53 +11,70 @@ import BreedCrumps from "../../components/BreedCrumps/BreedCrumps";
 import ProductsSlider from "../../components/ProductsSlider/ProductsSlider";
 import QuantityBox from "../../components/QuantityBox/QuantityBox";
 import { getProductById, getRelatedProducts } from "../../data/products";
+import { useCatalog } from "../../data/useCatalog";
 import { getCategoryName } from "../../data/categories";
+import { useCategories } from "../../data/useCategories";
+import { api } from "../../api/client";
 import { useStore } from "../../context/StoreContext";
 import { formatPrice, discountPercent } from "../../utils/format";
 
-const ReviewsSection = ({ rating, count }) => {
-  const [reviewList, setReviewList] = useState([
-    {
-      name: "Rakib H.",
-      date: "2 weeks ago",
-      rating: 5,
-      text: "Excellent quality for the price. Packaging was ultra-premium with the warranty card and manual. The skeleton dial looks gorgeous in natural sunlight.",
-    },
-    {
-      name: "Mim A.",
-      date: "1 month ago",
-      rating: 4,
-      text: "Beautiful watch, looks exactly like the high-res photos. The strap is super comfortable and fits nicely.",
-    },
-    {
-      name: "Shakib M.",
-      date: "2 months ago",
-      rating: 5,
-      text: "Authentic product with official warranty. Customer support on WhatsApp answered all questions quickly before dispatch. 10/10 service.",
-    },
-  ]);
+const ReviewsSection = ({ rating, count, productId }) => {
+  const [reviewList, setReviewList] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    api.reviews
+      .list(productId)
+      .then((list) => {
+        if (cancelled) return;
+        setReviewList(
+          list.map((r) => ({
+            name: r.name,
+            date: new Date(r.createdAt).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }),
+            rating: r.rating,
+            text: r.text,
+          }))
+        );
+      })
+      .catch(() => {})
+      .finally(() => !cancelled && setLoadingReviews(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [productId]);
 
   const [author, setAuthor] = useState("");
   const [newRating, setNewRating] = useState(5);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [reviewError, setReviewError] = useState("");
+  const [reviewBusy, setReviewBusy] = useState(false);
 
-  const handleAddReview = (e) => {
+  const handleAddReview = async (e) => {
     e.preventDefault();
-    if (!author.trim() || !comment.trim()) return;
-    setReviewList([
-      {
+    if (!author.trim() || !comment.trim() || reviewBusy) return;
+    setReviewBusy(true);
+    setReviewError("");
+    try {
+      await api.reviews.create(productId, {
         name: author.trim(),
-        date: "Just now",
         rating: newRating,
         text: comment.trim(),
-      },
-      ...reviewList,
-    ]);
-    setAuthor("");
-    setComment("");
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+      });
+      setAuthor("");
+      setComment("");
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch (cause) {
+      setReviewError(cause.message);
+    } finally {
+      setReviewBusy(false);
+    }
   };
 
   return (
@@ -88,7 +105,7 @@ const ReviewsSection = ({ rating, count }) => {
         </h4>
         {submitted && (
           <div className="p-3 mb-3 rounded-xl bg-emerald-50 text-emerald-700 text-[13px] font-semibold flex items-center gap-2">
-            <IoCheckmarkCircle className="text-[18px]" /> Thank you! Your review has been added.
+            <IoCheckmarkCircle className="text-[18px]" /> Thank you! Your review was submitted and will appear after approval.
           </div>
         )}
         <form onSubmit={handleAddReview} className="space-y-3">
@@ -120,14 +137,25 @@ const ReviewsSection = ({ rating, count }) => {
           />
           <button
             type="submit"
-            className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-[13px] transition"
+            disabled={reviewBusy}
+            className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-[13px] transition disabled:opacity-50"
           >
-            Submit Review
+            {reviewBusy ? "Submitting…" : "Submit Review"}
           </button>
+          {reviewError && (
+            <p className="text-[12.5px] font-semibold text-rose-600">{reviewError}</p>
+          )}
         </form>
       </div>
 
       {/* Reviews list */}
+      {loadingReviews ? (
+        <p className="text-[13px] text-slate-400">Loading reviews…</p>
+      ) : reviewList.length === 0 ? (
+        <p className="text-[13px] text-slate-400">
+          No reviews yet — be the first to share your experience.
+        </p>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {reviewList.map((r, i) => (
           <div
@@ -150,6 +178,7 @@ const ReviewsSection = ({ rating, count }) => {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 };
@@ -157,6 +186,8 @@ const ReviewsSection = ({ rating, count }) => {
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  useCatalog();
+  useCategories();
   const product = getProductById(id);
 
   const { addToCart, toggleWishlist, isInWishlist, showToast, recordViewedProduct } = useStore();
@@ -225,10 +256,30 @@ const ProductDetails = () => {
         items={[
           { label: "Home", to: "/" },
           { label: "Catalog", to: "/shop" },
-          {
-            label: getCategoryName(product.category),
-            to: `/shop?category=${product.category}`,
-          },
+          ...(product.category
+            ? [
+                {
+                  label: getCategoryName(product.category),
+                  to: `/shop?category=${product.category}`,
+                },
+              ]
+            : []),
+          ...(product.subCategory
+            ? [
+                {
+                  label: product.subCategory,
+                  to: `/shop?category=${product.category}&sub=${encodeURIComponent(product.subCategory)}`,
+                },
+              ]
+            : []),
+          ...(product.subSubCategory
+            ? [
+                {
+                  label: product.subSubCategory,
+                  to: `/shop?category=${product.category}&sub=${encodeURIComponent(product.subCategory)}&subsub=${encodeURIComponent(product.subSubCategory)}`,
+                },
+              ]
+            : []),
           { label: product.name },
         ]}
       />
@@ -350,9 +401,11 @@ const ProductDetails = () => {
                   )}
                 </div>
 
-                <p className="text-[14.5px] text-slate-600 leading-relaxed mt-4">
-                  {product.description}
-                </p>
+                {product.shortDescription && (
+                  <p className="text-[13.5px] text-slate-500 leading-relaxed mt-4 whitespace-pre-line">
+                    {product.shortDescription}
+                  </p>
+                )}
 
                 {/* Color Variants */}
                 {product.colors && product.colors.length > 0 && (
@@ -447,7 +500,6 @@ const ProductDetails = () => {
               className="border-b border-slate-200"
             >
               <Tab label="Craftsmanship & Overview" className="!normal-case !font-bold !text-[14px]" />
-              <Tab label="Technical Specifications" className="!normal-case !font-bold !text-[14px]" />
               <Tab label={`Customer Reviews (${product.reviews})`} className="!normal-case !font-bold !text-[14px]" />
             </Tabs>
 
@@ -480,33 +532,7 @@ const ProductDetails = () => {
               )}
 
               {tab === 1 && (
-                <div className="overflow-hidden rounded-2xl border border-slate-200 max-w-2xl">
-                  <table className="w-full text-[13.5px]">
-                    <tbody className="divide-y divide-slate-100">
-                      {[
-                        ["Brand", product.brand],
-                        ["Model SKU", product.sku],
-                        ["Movement Type", product.movement],
-                        ["Strap Material", product.strap],
-                        ["Water Resistance", product.waterResist],
-                        ["Available Colorways", product.colors.join(", ")],
-                        ["Warranty Coverage", "1 Year Official Brand Warranty"],
-                        ["Packaging", "Original OLEVS Luxury Box & Warranty Card"],
-                      ].map(([k, v]) => (
-                        <tr key={k} className="hover:bg-slate-50 transition">
-                          <td className="py-3 px-4 font-bold text-slate-900 w-[220px] bg-slate-50/50">
-                            {k}
-                          </td>
-                          <td className="py-3 px-4 text-slate-600">{v}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {tab === 2 && (
-                <ReviewsSection rating={product.rating} count={product.reviews} />
+                <ReviewsSection rating={product.rating} count={product.reviews} productId={product.id} />
               )}
             </div>
           </div>

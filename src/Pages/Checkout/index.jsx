@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import BreedCrumps from "../../components/BreedCrumps/BreedCrumps";
 import { useStore } from "../../context/StoreContext";
+import { useAuth } from "../../context/AuthContext";
+import { api } from "../../api/client";
 import { formatPrice } from "../../utils/format";
 
 const Checkout = () => {
-  const { cart, cartTotal, clearCart } = useStore();
-  const navigate = useNavigate();
+  const { cart, cartTotal, cartSubtotal, couponDiscount, appliedCoupon, clearCart } =
+    useStore();
+  const { user } = useAuth();
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -16,23 +19,63 @@ const Checkout = () => {
     city: "Dhaka",
     notes: "",
   });
+
+  useEffect(() => {
+    if (!user) return;
+    setForm((prev) => ({
+      ...prev,
+      name: prev.name || user.name || "",
+      email: prev.email || user.email || "",
+      phone: prev.phone || user.phone || "",
+    }));
+  }, [user]);
   const [payment, setPayment] = useState("cod");
   const [orderId, setOrderId] = useState(null);
+  const [placing, setPlacing] = useState(false);
+  const [error, setError] = useState("");
 
   const shipping = cartTotal >= 2000 || cartTotal === 0 ? 0 : 80;
   const total = cartTotal + shipping;
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
-  const placeOrder = (e) => {
+  const placeOrder = async (e) => {
     e.preventDefault();
     if (!form.name || !form.phone || !form.address) {
-      alert("Please fill in your name, phone and address.");
+      setError("Please fill in your name, phone and address.");
       return;
     }
-    setOrderId("OWS-" + Math.floor(100000 + Math.random() * 900000));
-    clearCart();
-    window.scrollTo({ top: 0 });
+
+    setError("");
+    setPlacing(true);
+    try {
+      // The API re-prices the order from the database, so only product ids and
+      // quantities are sent from the browser.
+      const order = await api.orders.create({
+        customer: {
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          city: form.city,
+          address: form.address.trim(),
+        },
+        items: cart.map(({ product, qty }) => ({
+          productId: product.id,
+          qty,
+        })),
+        coupon: appliedCoupon?.code ?? null,
+        payment,
+        notes: form.notes.trim(),
+      });
+
+      setOrderId(order.id);
+      clearCart();
+      window.scrollTo({ top: 0 });
+    } catch (cause) {
+      setError(cause.message);
+    } finally {
+      setPlacing(false);
+    }
   };
 
   if (orderId) {
@@ -218,8 +261,16 @@ const Checkout = () => {
               <div className="space-y-2.5 text-[14px]">
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.6)]">Subtotal</span>
-                  <span className="font-[600]">{formatPrice(cartTotal)}</span>
+                  <span className="font-[600]">{formatPrice(cartSubtotal)}</span>
                 </div>
+                {appliedCoupon && couponDiscount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Discount ({appliedCoupon.code})</span>
+                    <span className="font-[600]">
+                      −{formatPrice(couponDiscount)}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.6)]">Shipping</span>
                   <span className="font-[600]">
@@ -236,11 +287,17 @@ const Checkout = () => {
                   <span className="text-[#ff5252]">{formatPrice(total)}</span>
                 </div>
               </div>
+              {error && (
+                <p className="mt-4 text-[12.5px] font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                  {error}
+                </p>
+              )}
               <Button
                 type="submit"
+                disabled={placing}
                 className="btn-org w-full !mt-5 !normal-case !py-3"
               >
-                Place Order →
+                {placing ? "Placing order…" : "Place Order →"}
               </Button>
             </div>
           </form>

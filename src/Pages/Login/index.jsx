@@ -1,17 +1,34 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    navigate("/");
+    setError("");
+    setBusy(true);
+
+    try {
+      const user = await login(form.email, form.password);
+      const target =
+        location.state?.from ?? (user.role === "admin" ? "/admin" : "/");
+      navigate(target, { replace: true });
+    } catch (cause) {
+      setError(cause.message);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const inputCls =
@@ -32,6 +49,7 @@ const Login = () => {
             <input
               type="email"
               required
+              autoComplete="email"
               placeholder="Email Address"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -40,11 +58,22 @@ const Login = () => {
             <input
               type="password"
               required
+              autoComplete="current-password"
               placeholder="Password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className={inputCls}
             />
+
+            {error && (
+              <p
+                role="alert"
+                className="text-[12.5px] font-semibold text-[#e11d48] bg-rose-50 border border-rose-200 rounded-md px-3 py-2"
+              >
+                {error}
+              </p>
+            )}
+
             <div className="flex items-center justify-between">
               <FormControlLabel
                 control={<Checkbox size="small" defaultChecked />}
@@ -59,11 +88,16 @@ const Login = () => {
             </div>
             <Button
               type="submit"
+              disabled={busy}
               className="btn-org w-full !normal-case !py-3"
             >
-              Sign In
+              {busy ? "Signing in…" : "Sign In"}
             </Button>
           </form>
+
+          <p className="text-[11.5px] text-center text-[rgba(0,0,0,0.45)] mt-3">
+            Store administrators sign in here with their admin account.
+          </p>
 
           <div className="flex items-center gap-3 my-6">
             <span className="flex-1 h-px bg-[rgba(0,0,0,0.1)]" />

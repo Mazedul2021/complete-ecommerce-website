@@ -6,7 +6,7 @@ import Switch from "@mui/material/Switch";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
-import { categories } from "../../data/categories";
+import { useCategories } from "../../data/useCategories";
 import Rating from "@mui/material/Rating";
 import { formatPrice } from "../../utils/format";
 
@@ -38,6 +38,7 @@ const FilterBox = ({ title, open, onToggle, count, children }) => (
 );
 
 const Sidebar = ({ filters, onFilterChange, priceBounds }) => {
+  const categories = useCategories();
   const [isOpenCategory, setIsOpenCategory] = useState(true);
   const [isOpenBrand, setIsOpenBrand] = useState(true);
   const [isOpenPrice, setIsOpenPrice] = useState(true);

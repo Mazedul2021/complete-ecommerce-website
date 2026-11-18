@@ -1,5 +1,10 @@
-import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
-import { getProductById } from "../data/products";
+import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  getCatalogVersion,
+  getProductById,
+  loadCatalog,
+  subscribeCatalog,
+} from "../data/products";
 
 const StoreContext = createContext(null);
 
@@ -12,38 +17,56 @@ const load = (key, fallback) => {
   }
 };
 
-export const StoreProvider = ({ children }) => {
-  const [cart, setCart] = useState(() =>
-    load("ows_cart", []).map((item) => ({
-      product: getProductById(item.id) ?? item.product,
-      qty: item.qty,
+// Cart, wishlist and recently-viewed are persisted as ids only. The product
+// documents themselves always come from the live catalog (MongoDB via the
+// store API), so admin edits and newly created products are reflected after a
+// reload instead of being resolved from the bundled seed.
+const readCart = () =>
+  load("ows_cart", [])
+    .map((line) => ({
+      id: Number(line?.id ?? line?.product?.id),
+      qty: Math.floor(Number(line?.qty) || 0),
     }))
-  );
-  const [wishlist, setWishlist] = useState(() =>
-    load("ows_wishlist", []).map((id) => getProductById(id)).filter(Boolean)
-  );
+    .filter((line) => Number.isFinite(line.id) && line.id > 0 && line.qty > 0);
+
+const readIds = (key) =>
+  load(key, [])
+    .map((entry) => Number(entry))
+    .filter((id) => Number.isFinite(id) && id > 0);
+
+const resolve = (ids) => ids.map((id) => getProductById(id)).filter(Boolean);
+
+export const StoreProvider = ({ children }) => {
+  const [cartLines, setCartLines] = useState(readCart);
+  const [wishlistIds, setWishlistIds] = useState(() => readIds("ows_wishlist"));
+  const [recentIds, setRecentIds] = useState(() => readIds("ows_recent"));
+  const [catalogVersion, setCatalogVersion] = useState(getCatalogVersion);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [toast, setToast] = useState(null);
   const [appliedCoupon, setAppliedCoupon] = useState(() => load("ows_coupon", null));
-  const [recentlyViewed, setRecentlyViewed] = useState(() =>
-    load("ows_recent", []).map((id) => getProductById(id)).filter(Boolean)
-  );
+
+  // Re-resolve saved items whenever the catalog is replaced (first API load,
+  // or a product edit made in the admin console).
+  useEffect(() => {
+    const sync = () => setCatalogVersion(getCatalogVersion());
+    const unsubscribe = subscribeCatalog(sync);
+    loadCatalog().then(sync);
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem(
-      "ows_cart",
-      JSON.stringify(cart.map((i) => ({ id: i.product.id, qty: i.qty })))
-    );
-  }, [cart]);
+    localStorage.setItem("ows_cart", JSON.stringify(cartLines));
+  }, [cartLines]);
 
   useEffect(() => {
-    localStorage.setItem(
-      "ows_wishlist",
-      JSON.stringify(wishlist.map((p) => p.id))
-    );
-  }, [wishlist]);
+    localStorage.setItem("ows_wishlist", JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
+
+  useEffect(() => {
+    localStorage.setItem("ows_recent", JSON.stringify(recentIds));
+  }, [recentIds]);
 
   useEffect(() => {
     if (appliedCoupon) {
@@ -52,6 +75,30 @@ export const StoreProvider = ({ children }) => {
       localStorage.removeItem("ows_coupon");
     }
   }, [appliedCoupon]);
+
+  const cart = useMemo(
+    () =>
+      cartLines
+        .map((line) => {
+          const product = getProductById(line.id);
+          return product ? { product, qty: line.qty } : null;
+        })
+        .filter(Boolean),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cartLines, catalogVersion]
+  );
+
+  const wishlist = useMemo(
+    () => resolve(wishlistIds),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [wishlistIds, catalogVersion]
+  );
+
+  const recentlyViewed = useMemo(
+    () => resolve(recentIds),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [recentIds, catalogVersion]
+  );
 
   const showToast = useCallback(({ type = "success", title, message, product, duration = 3500 }) => {
     setToast({
@@ -68,14 +115,14 @@ export const StoreProvider = ({ children }) => {
   }, []);
 
   const addToCart = useCallback((product, qty = 1, options = { openDrawer: false }) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id);
+    setCartLines((prev) => {
+      const existing = prev.find((line) => line.id === product.id);
       if (existing) {
-        return prev.map((i) =>
-          i.product.id === product.id ? { ...i, qty: i.qty + qty } : i
+        return prev.map((line) =>
+          line.id === product.id ? { ...line, qty: line.qty + qty } : line
         );
       }
-      return [...prev, { product, qty }];
+      return [...prev, { id: product.id, qty }];
     });
 
     showToast({
@@ -91,16 +138,16 @@ export const StoreProvider = ({ children }) => {
   }, [showToast]);
 
   const updateCartQty = useCallback((id, qty) => {
-    setCart((prev) =>
+    setCartLines((prev) =>
       qty <= 0
-        ? prev.filter((i) => i.product.id !== id)
-        : prev.map((i) => (i.product.id === id ? { ...i, qty } : i))
+        ? prev.filter((line) => line.id !== id)
+        : prev.map((line) => (line.id === id ? { ...line, qty } : line))
     );
   }, []);
 
   const removeFromCart = useCallback((id) => {
-    const item = cart.find((i) => i.product.id === id);
-    setCart((prev) => prev.filter((i) => i.product.id !== id));
+    const item = cart.find((line) => line.product.id === id);
+    setCartLines((prev) => prev.filter((line) => line.id !== id));
     if (item) {
       showToast({
         type: "info",
@@ -111,7 +158,7 @@ export const StoreProvider = ({ children }) => {
   }, [cart, showToast]);
 
   const clearCart = useCallback(() => {
-    setCart([]);
+    setCartLines([]);
     showToast({
       type: "info",
       title: "Cart Cleared",
@@ -120,30 +167,29 @@ export const StoreProvider = ({ children }) => {
   }, [showToast]);
 
   const toggleWishlist = useCallback((product) => {
-    setWishlist((prev) => {
-      const exists = prev.some((p) => p.id === product.id);
+    setWishlistIds((prev) => {
+      const exists = prev.includes(product.id);
       if (exists) {
         showToast({
           type: "info",
           title: "Removed from Wishlist",
           message: product.name,
         });
-        return prev.filter((p) => p.id !== product.id);
-      } else {
-        showToast({
-          type: "wishlist",
-          title: "Added to Wishlist!",
-          message: product.name,
-          product,
-        });
-        return [...prev, product];
+        return prev.filter((id) => id !== product.id);
       }
+      showToast({
+        type: "wishlist",
+        title: "Added to Wishlist!",
+        message: product.name,
+        product,
+      });
+      return [...prev, product.id];
     });
   }, [showToast]);
 
   const isInWishlist = useCallback(
-    (id) => wishlist.some((p) => p.id === id),
-    [wishlist]
+    (id) => wishlistIds.includes(Number(id)),
+    [wishlistIds]
   );
 
   const openQuickView = useCallback((product) => {
@@ -154,29 +200,27 @@ export const StoreProvider = ({ children }) => {
     setQuickViewProduct(null);
   }, []);
 
-  const applyCoupon = useCallback((code) => {
+  const applyCoupon = useCallback(async (code) => {
     const clean = code.trim().toUpperCase();
-    if (clean === "OLEVS10") {
-      const couponData = { code: "OLEVS10", discountPercent: 10, label: "10% VIP Discount" };
+    if (!clean) return { success: false, message: "Enter a coupon code." };
+    try {
+      const { api } = await import("../api/client");
+      const coupon = await api.coupons.validate(clean);
+      const couponData = {
+        code: coupon.code,
+        discountPercent: coupon.percent,
+        label: `${coupon.percent}% Discount`,
+      };
       setAppliedCoupon(couponData);
       showToast({
         type: "success",
         title: "Coupon Applied!",
-        message: "You get 10% off your entire order.",
+        message: `Code ${coupon.code} gives ${coupon.percent}% off your order.`,
       });
       return { success: true };
+    } catch {
+      return { success: false, message: "Invalid or expired coupon code." };
     }
-    if (clean === "LUXURY20") {
-      const couponData = { code: "LUXURY20", discountPercent: 20, label: "20% Exclusive Promo" };
-      setAppliedCoupon(couponData);
-      showToast({
-        type: "success",
-        title: "20% Discount Applied!",
-        message: "Luxury VIP coupon activated.",
-      });
-      return { success: true };
-    }
-    return { success: false, message: "Invalid code. Try OLEVS10 or LUXURY20" };
   }, [showToast]);
 
   const removeCoupon = useCallback(() => {
@@ -190,12 +234,7 @@ export const StoreProvider = ({ children }) => {
 
   const recordViewedProduct = useCallback((product) => {
     if (!product) return;
-    setRecentlyViewed((prev) => {
-      const filtered = prev.filter((p) => p.id !== product.id);
-      const next = [product, ...filtered].slice(0, 8);
-      localStorage.setItem("ows_recent", JSON.stringify(next.map((p) => p.id)));
-      return next;
-    });
+    setRecentIds((prev) => [product.id, ...prev.filter((id) => id !== product.id)].slice(0, 8));
   }, []);
 
   const cartCount = cart.reduce((sum, i) => sum + i.qty, 0);

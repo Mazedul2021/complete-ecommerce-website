@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import BreedCrumps from "../../components/BreedCrumps/BreedCrumps";
+import { api } from "../../api/client";
+import { DEFAULT_SETTINGS } from "../../admin/data/adminData";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [info, setInfo] = useState(DEFAULT_SETTINGS);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
 
-  const submit = (e) => {
+  useEffect(() => {
+    api.settings
+      .get()
+      .then(setInfo)
+      .catch(() => {});
+  }, []);
+
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+
+  const submit = async (e) => {
     e.preventDefault();
-    setSent(true);
+    setError("");
+    setBusy(true);
+    try {
+      await api.contact.send(form);
+      setSent(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (cause) {
+      setError(cause.message);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const inputCls =
@@ -29,9 +54,9 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="space-y-4">
               {[
-                ["📍", "Visit Our Store", "Sha-38/1, Middle Badda, Dhaka-1212"],
-                ["📞", "Call Us", "(+880) 1799018864", "Sat–Thu, 10am – 8pm"],
-                ["✉️", "Email Us", "contact@olevswatchshop.com", "Replies within 24h"],
+                ["📍", "Visit Our Store", info.address],
+                ["📞", "Call Us", info.supportPhone, "Sat–Thu, 10am – 8pm"],
+                ["✉️", "Email Us", info.supportEmail, "Replies within 24h"],
               ].map(([icon, title, line1, line2]) => (
                 <div
                   key={title}
@@ -75,31 +100,48 @@ const Contact = () => {
                   onSubmit={submit}
                   className="bg-[#fafafa] rounded-xl border border-[rgba(0,0,0,0.05)] p-6 space-y-4"
                 >
+                  {error && (
+                    <p className="text-[12.5px] font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                      {error}
+                    </p>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       required
                       placeholder="Your Name"
+                      value={form.name}
+                      onChange={set("name")}
                       className={inputCls}
                     />
                     <input
                       required
                       type="email"
                       placeholder="Email Address"
+                      value={form.email}
+                      onChange={set("email")}
                       className={inputCls}
                     />
                   </div>
-                  <input placeholder="Subject" className={inputCls} />
+                  <input
+                    placeholder="Subject"
+                    value={form.subject}
+                    onChange={set("subject")}
+                    className={inputCls}
+                  />
                   <textarea
                     required
                     rows="6"
                     placeholder="Your message..."
+                    value={form.message}
+                    onChange={set("message")}
                     className={`${inputCls} resize-none`}
                   />
                   <Button
                     type="submit"
+                    disabled={busy}
                     className="btn-org !normal-case !px-8 !py-3"
                   >
-                    Send Message →
+                    {busy ? "Sending…" : "Send Message →"}
                   </Button>
                 </form>
               )}
