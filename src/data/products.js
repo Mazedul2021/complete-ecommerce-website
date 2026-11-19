@@ -1,3 +1,5 @@
+import { API_BASE } from "../api/base";
+
 // Product photos live in /public/products so the same stable paths can be
 // stored in the catalog database and served to every client.
 export const productImages = [
@@ -857,7 +859,7 @@ let pendingLoad = null;
 // bundled seed stays in place, so the storefront still renders offline.
 export const loadCatalog = () => {
   if (!pendingLoad) {
-    pendingLoad = fetch("/api/products")
+    pendingLoad = fetch(`${API_BASE}/products`)
       .then((response) => {
         if (!response.ok) throw new Error(`API responded ${response.status}`);
         return response.json();

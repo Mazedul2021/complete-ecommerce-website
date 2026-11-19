@@ -2,9 +2,7 @@
 // /api to the Node server (see vite.config.js); in production the server
 // serves the built storefront itself, so the same relative path works.
 // API base URL
-const BASE_URL = (
-  import.meta.env.VITE_API_URL || "/api"
-).replace(/\/+$/, "");
+import { API_BASE as BASE_URL } from "./base";
 
 const request = async (path, { method = "GET", body } = {}) => {
   const response = await fetch(`${BASE_URL}${path}`, {

@@ -1,3 +1,5 @@
+import { API_BASE } from "../api/base";
+
 // Shared storefront settings — replaced in place after GET /api/settings.
 export const settings = {
   storeName: "OLEVS Watch Shop",
@@ -33,7 +35,7 @@ let pendingLoad = null;
 
 export const loadSettings = () => {
   if (!pendingLoad) {
-    pendingLoad = fetch("/api/settings")
+    pendingLoad = fetch(`${API_BASE}/settings`)
       .then((response) => {
         if (!response.ok) throw new Error(`API responded ${response.status}`);
         return response.json();

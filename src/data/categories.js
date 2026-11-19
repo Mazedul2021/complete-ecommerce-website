@@ -1,3 +1,5 @@
+import { API_BASE } from "../api/base";
+
 // Category photos live in /public/categories so the same stable paths can be
 // stored in the database and served to every client.
 export const categoryImages = [
@@ -136,7 +138,7 @@ let pendingLoad = null;
 // bundled seed stays in place, so the storefront still renders offline.
 export const loadCategories = () => {
   if (!pendingLoad) {
-    pendingLoad = fetch("/api/categories")
+    pendingLoad = fetch(`${API_BASE}/categories`)
       .then((response) => {
         if (!response.ok) throw new Error(`API responded ${response.status}`);
         return response.json();
