@@ -1,19 +1,31 @@
 // Thin fetch wrapper around the store API. In development Vite proxies
 // /api to the Node server (see vite.config.js); in production the server
 // serves the built storefront itself, so the same relative path works.
-const BASE_URL = import.meta.env.VITE_API_URL ?? "/api";
+// API base URL
+const BASE_URL = (
+  import.meta.env.VITE_API_URL || "/api"
+).replace(/\/+$/, "");
 
 const request = async (path, { method = "GET", body } = {}) => {
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
-    // The session lives in an HttpOnly cookie, so it must travel with every call.
-    credentials: "same-origin",
-    headers: body === undefined ? undefined : { "Content-Type": "application/json" },
-    body: body === undefined ? undefined : JSON.stringify(body),
+
+    // Required for cross-origin Render authentication cookies
+    credentials: "include",
+
+    headers: body === undefined
+      ? undefined
+      : { "Content-Type": "application/json" },
+
+    body: body === undefined
+      ? undefined
+      : JSON.stringify(body),
   });
 
   const text = await response.text();
+
   let data = null;
+
   if (text) {
     try {
       data = JSON.parse(text);
@@ -27,9 +39,14 @@ const request = async (path, { method = "GET", body } = {}) => {
       data && typeof data === "object" && data.error
         ? data.error
         : `Request failed (${response.status})`;
+
     const error = new Error(message);
     error.status = response.status;
-    error.details = data && typeof data === "object" ? data.details : undefined;
+    error.details =
+      data && typeof data === "object"
+        ? data.details
+        : undefined;
+
     throw error;
   }
 
